@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+.askless/
+web/node_modules/
+web/dist/
+web/tsconfig.tsbuildinfo
+web/.vitest/
+artifacts/
+plan/
+.DS_Store

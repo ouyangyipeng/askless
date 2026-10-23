@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f3ed" />
+    <title>AskLess — More agency. Fewer interruptions.</title>
+    <meta
+      name="description"
+      content="The open-source decision compiler for agents. Run the alternatives, compare real outputs, and ask only what matters. Start locally with the contact CSV adapter."
+    />
+    <link rel="canonical" href="https://ouyangyipeng.github.io/askless/" />
+    <meta
+      property="og:title"
+      content="AskLess — More agency. Fewer interruptions."
+    />
+    <meta
+      property="og:description"
+      content="Run the alternatives. Ask only what matters. An open-source experiment in evidence-backed agent decisions."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ouyangyipeng.github.io/askless/" />
+    <meta
+      property="og:image"
+      content="https://ouyangyipeng.github.io/askless/images/social.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/askless/assets/favicon.svg" />
+    <script type="module" crossorigin src="/askless/assets/site.js"></script>
+    <link rel="stylesheet" crossorigin href="/askless/assets/index.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="brand" href="#" aria-label="AskLess home"
+        ><svg viewBox="0 0 36 36" aria-hidden="true">
+          <rect width="36" height="36" rx="10" fill="currentColor" />
+          <path
+            d="M10 10v5q0 3 4 3h8q4 0 4-3v-5M18 18v9"
+            fill="none"
+            stroke="#f5f3ed"
+            stroke-width="2"
+          />
+          <circle cx="10" cy="9" r="2" fill="#f5f3ed" />
+          <circle cx="26" cy="9" r="2" fill="#f5f3ed" />
+          <circle cx="18" cy="27" r="2.5" fill="#dc623a" /></svg
+        ><span>askless<span class="brand-dot">.</span></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#mechanism">The idea</a><a href="#explore">Explore</a
+        ><a class="nav-source" href="https://github.com/ouyangyipeng/askless"
+          >GitHub <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="status-dot"></span> An open-source experiment · v0.1
+          </div>
+          <h1 id="hero-title">
+            More agency.<br />Fewer <em>interruptions.</em>
+          </h1>
+          <p class="hero-description">
+            Your agents have questions. Let them run the alternatives first.
+            Bring you the decisions that actually change the outcome.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#start"
+              >Run it locally <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="#explore"
+              >See the idea in action <span aria-hidden="true">↓</span></a
+            >
+          </div>
+          <p class="hero-note">
+            Local-first. MIT licensed. Built for a little more focus.
+          </p>
+        </div>
+        <div
+          class="compiler-visual"
+          role="img"
+          aria-label="In the included sample: three agents ask nine questions. Eight policy combinations are executed, leaving two human decisions and one equivalent choice resolved automatically."
+        >
+          <div class="visual-heading">
+            <span>THE DECISION COMPILER</span
+            ><span class="visual-index">FIG. 01</span>
+          </div>
+          <div class="agent-stream">
+            <div class="agent-lane">
+              <span>DATA ENGINEER</span>
+              <div><i>?</i><i>?</i><i>?</i></div>
+            </div>
+            <div class="agent-lane">
+              <span>QUALITY REVIEWER</span>
+              <div><i>?</i><i>?</i><i>?</i></div>
+            </div>
+            <div class="agent-lane">
+              <span>DELIVERY LEAD</span>
+              <div><i>?</i><i>?</i><i>?</i></div>
+            </div>
+          </div>
+          <svg class="flow-lines" viewBox="0 0 440 85" aria-hidden="true">
+            <path
+              d="M73 0C73 65 220 8 220 85M220 0V85M367 0C367 65 220 8 220 85"
+            />
+            <path
+              class="flow-motion"
+              d="M73 0C73 65 220 8 220 85M220 0V85M367 0C367 65 220 8 220 85"
+            />
+          </svg>
+          <div class="compiler-core">
+            <span class="core-icon">↳</span>
+            <div>
+              <strong>Run. Compare. Compile.</strong
+              ><span>8 combinations · observed outcomes</span>
+            </div>
+            <span class="core-status">●</span>
+          </div>
+          <div class="output-line"></div>
+          <div class="decision-output">
+            <div>
+              <span class="decision-number">2</span>
+              <div>
+                <strong>decisions for you</strong
+                ><span>with the evidence attached</span>
+              </div>
+            </div>
+            <span class="output-arrow">↗</span>
+          </div>
+          <div class="auto-output">
+            <span>✓</span> Email case: equivalent on this input
+            <span class="auto-tag">RESOLVED</span>
+          </div>
+          <div class="visual-foot">
+            <span>9 QUESTIONS IN</span><span>YOUR ATTENTION, PRESERVED.</span>
+          </div>
+        </div>
+      </section>
+      <div class="principle-strip wrap">
+        <span>THE PREMISE</span>
+        <p>
+          Human attention is a resource.<br class="mobile-break" />
+          Agents should spend it carefully.
+        </p>
+        <span class="strip-mark" aria-hidden="true">✳</span>
+      </div>
+      <section
+        class="mechanism wrap section-space"
+        id="mechanism"
+        aria-labelledby="mechanism-title"
+      >
+        <div class="section-intro">
+          <span class="eyebrow">01 / FROM QUESTIONS TO EVIDENCE</span>
+          <h2 id="mechanism-title">
+            Before asking you,<br /><em>try both ways.</em>
+          </h2>
+          <p>
+            A choice deserves your attention when it changes something you care
+            about. AskLess makes that difference visible.
+          </p>
+        </div>
+        <div class="mechanism-steps">
+          <article>
+            <span class="step-number">01</span>
+            <div>
+              <h3>Make the question executable.</h3>
+              <p>
+                Three roles ask within explicit policy contracts. Shared
+                contracts and an exact input hash bring repeated questions
+                together.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <div>
+              <h3>Look at what actually changes.</h3>
+              <p>
+                Execute all eight policy combinations. Compare outputs,
+                quarantined rows, and blocking status across every interaction.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <div>
+              <h3>Return the meaningful decisions.</h3>
+              <p>
+                Resolve equivalent choices for this input. Show you the
+                differences for the rest, then propagate your policy and verify
+                the result.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section
+        class="explorer-section"
+        id="explore"
+        aria-labelledby="explore-title"
+      >
+        <div class="wrap">
+          <div class="explorer-heading">
+            <div>
+              <span class="eyebrow">02 / A SMALL, REAL EXAMPLE</span>
+              <h2 id="explore-title">
+                Same input.<br /><em>Different consequences.</em>
+              </h2>
+            </div>
+            <p>
+              Eight contact rows. Two duplicates.<br />Two invalid emails.
+              Explore the decisions<br class="desktop-break" />
+              that survive compilation.
+            </p>
+          </div>
+          <div id="sample-explorer">
+            <p class="sample-fallback">
+              The sample has two remaining decisions: keep the first or last
+              duplicate, and quarantine invalid emails or block the batch.
+              Enable JavaScript to compare the saved branch outputs.
+            </p>
+          </div>
+          <p class="sample-note">
+            Interactive walkthrough · Results precomputed by the real CSV
+            executor from
+            <a
+              href="https://github.com/ouyangyipeng/askless/blob/main/examples/contacts.csv"
+              >the included sample</a
+            >. No model calls in this page.
+          </p>
+        </div>
+      </section>
+      <section
+        class="workbench-section wrap section-space"
+        aria-labelledby="workbench-title"
+      >
+        <div class="workbench-heading">
+          <div>
+            <span class="eyebrow">03 / THE LOCAL WORKBENCH</span>
+            <h2 id="workbench-title">
+              Every decision<br />has a <em>paper trail.</em>
+            </h2>
+          </div>
+          <p>
+            Follow the original questions, inspect branch outputs, make the
+            call, and take the evidence with you.
+          </p>
+        </div>
+        <figure class="workbench-frame">
+          <div class="window-bar">
+            <span class="window-dots"><i></i><i></i><i></i></span
+            ><span>ASKLESS / LOCAL WORKBENCH</span><span>127.0.0.1</span>
+          </div>
+          <img
+            src="/askless/assets/workbench.jpg"
+            width="1265"
+            height="949"
+            loading="lazy"
+            alt="AskLess running locally: three agent roles, nine questions compiled into two decisions, eight completed policy branches, and a traceable decision queue."
+          />
+          <figcaption>
+            <span>THE ACTUAL APP · CHINESE INTERFACE IN v0.1</span
+            ><a
+              href="https://github.com/ouyangyipeng/askless/blob/main/docs/validation-2026-10-23.md"
+              >Read the validation notes <span aria-hidden="true">↗</span></a
+            >
+          </figcaption>
+        </figure>
+        <div class="workbench-details">
+          <article>
+            <span>01 — LOCAL BY DEFAULT</span>
+            <h3>Your data has a home.</h3>
+            <p>
+              CSV data, branches, and decisions live in local SQLite. The model
+              receives your task and aggregate statistics.
+            </p>
+          </article>
+          <article>
+            <span>02 — AN AUDITABLE PATH</span>
+            <h3>Keep the receipts.</h3>
+            <p>
+              Every choice is scoped to the input. Three explicit policy
+              receipts and matching result hashes close the loop.
+            </p>
+          </article>
+          <article>
+            <span>03 — A LIGHT FOOTPRINT</span>
+            <h3>Less infrastructure, too.</h3>
+            <p>
+              One Python service and a browser. Use a remote LLM, or try the
+              deterministic offline mode. No model downloads.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="scope-section wrap" aria-labelledby="scope-title">
+        <span class="eyebrow">A WORKING BEGINNING</span>
+        <div>
+          <h2 id="scope-title">
+            One adapter today.<br />A bigger question ahead.
+          </h2>
+          <p>
+            v0.1 is a bounded contact CSV experiment: three roles, three fixed
+            policy contracts, one shared deterministic executor. In the included
+            sample, nine protocol-generated questions become two human
+            decisions.
+          </p>
+          <p>
+            The next research question: how far can this approach travel into
+            richer agent workflows? General coding-agent integrations, new
+            adapters, and measured attention savings are open directions.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/ouyangyipeng/askless/blob/main/CONTRIBUTING.md"
+            >Build the next experiment with us
+            <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+      <section class="start-section" id="start" aria-labelledby="start-title">
+        <div class="wrap start-grid">
+          <div>
+            <span class="eyebrow">LESS ASKING. MORE DOING.</span>
+            <h2 id="start-title">
+              Give your attention<br /><em>some space.</em>
+            </h2>
+            <p>
+              Clone it. Start it. Bring a small CSV.<br />Your first run can be
+              completely offline.
+            </p>
+            <a
+              class="button light"
+              href="https://github.com/ouyangyipeng/askless"
+              >Explore the source <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="quickstart">
+            <div class="terminal-heading">
+              <span>YOUR TERMINAL</span
+              ><button type="button" id="copy-command">
+                Copy commands <span aria-hidden="true">⧉</span>
+              </button>
+            </div>
+            <pre><code id="install-command">git clone https://github.com/ouyangyipeng/askless.git
+cd askless
+./run.sh</code></pre>
+            <div class="terminal-foot">
+              <span class="status-dot"></span> Then open
+              <span class="local-address">127.0.0.1:8765</span>
+            </div>
+            <p class="requirements">
+              Python 3.12+ · uv · Node 24.15+ · pnpm 12<br /><a
+                href="https://github.com/ouyangyipeng/askless#quickstart"
+                >Setup &amp; model configuration
+                <span aria-hidden="true">↗</span></a
+              >
+            </p>
+            <span id="copy-status" class="sr-only" role="status"></span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer wrap">
+      <a class="brand footer-brand" href="#"
+        >askless<span class="brand-dot">.</span></a
+      >
+      <p>An experiment in considered autonomy.</p>
+      <nav aria-label="Footer">
+        <a href="https://github.com/ouyangyipeng/askless">Source ↗</a
+        ><a
+          href="https://github.com/ouyangyipeng/askless/blob/main/README.zh-CN.md"
+          lang="zh-CN"
+          >中文文档</a
+        ><a href="https://github.com/ouyangyipeng/askless/blob/main/LICENSE"
+          >MIT</a
+        >
+      </nav>
+      <span class="copyright">© 2026 Ouyang Yipeng</span>
+    </footer>
+  </body>
+</html>

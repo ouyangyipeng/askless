@@ -1,0 +1,9 @@
+email,name,team
+ada@example.com,Ada Lovelace,Research
+grace@example.com,Grace Hopper,Engineering
+ada@example.com,Ada L.,Systems
+lin@example.com,Lin Chen,Research
+alan@example.com,Alan Turing,Engineering
+lin@example.com,Lin C.,Systems
+not-an-email,Needs review,Unknown
+,Missing email,Unknown

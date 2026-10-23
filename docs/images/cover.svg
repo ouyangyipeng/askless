@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">AskLess — More agency. Fewer interruptions.</title>
+  <desc id="desc">Run the alternatives. Ask only what matters. In the included contact CSV sample, nine protocol questions become two human decisions after eight policy combinations.</desc>
+  <defs><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#c6d1ba"/></pattern></defs>
+  <rect width="1200" height="520" rx="12" fill="#f5f3ed"/>
+  <path d="M730 0H1188Q1200 0 1200 12V508Q1200 520 1188 520H730Z" fill="#e9eddf"/>
+  <path d="M730 0H1188Q1200 0 1200 12V508Q1200 520 1188 520H730Z" fill="url(#dots)"/>
+  <g transform="translate(57 50)"><rect width="36" height="36" rx="10" fill="#283d33"/><path d="M10 10v5q0 3 4 3h8q4 0 4-3v-5M18 18v9" fill="none" stroke="#f5f3ed" stroke-width="2"/><circle cx="10" cy="9" r="2" fill="#f5f3ed"/><circle cx="26" cy="9" r="2" fill="#f5f3ed"/><circle cx="18" cy="27" r="2.5" fill="#dc623a"/></g>
+  <text x="105" y="78" font-family="Arial,Helvetica,sans-serif" font-size="32" font-weight="600" letter-spacing="-1.5" fill="#283d33">askless<tspan fill="#bf4d2a">.</tspan></text>
+  <g fill="#283d33"><text x="57" y="160" font-family="Courier New,monospace" font-size="11" letter-spacing="2">THE DECISION COMPILER FOR AGENTS</text><text x="53" y="254" font-family="Georgia,serif" font-size="76" letter-spacing="-3">More agency.</text><text x="53" y="336" font-family="Georgia,serif" font-size="66" letter-spacing="-3" font-style="italic" fill="#bf4d2a">Fewer interruptions.</text><text x="57" y="390" font-family="Arial,Helvetica,sans-serif" font-size="18" fill="#697269">Run the alternatives. Ask only what matters.</text></g>
+  <path d="M57 448H670" stroke="#d9ddd2"/>
+  <text x="57" y="477" font-family="Courier New,monospace" font-size="10" fill="#697269" letter-spacing="1">LOCAL-FIRST · OPEN SOURCE · MIT</text>
+  <text x="772" y="72" font-family="Courier New,monospace" font-size="10" fill="#697269" letter-spacing="1">FIG. 01 / THE INCLUDED SAMPLE</text>
+  <g font-family="Georgia,serif" font-size="23" fill="#65765a" text-anchor="middle"><g fill="#f5f3ed" stroke="#c7d2bc"><rect x="782" y="117" width="102" height="52" rx="6"/><rect x="913" y="117" width="102" height="52" rx="6"/><rect x="1044" y="117" width="102" height="52" rx="6"/></g><text x="833" y="152">? ? ?</text><text x="964" y="152">? ? ?</text><text x="1095" y="152">? ? ?</text></g>
+  <g fill="none" stroke="#aebe9f"><path d="M833 169C833 220 964 183 964 235M964 169V235M1095 169C1095 220 964 183 964 235"/></g>
+  <rect x="802" y="235" width="324" height="58" rx="6" fill="#283d33"/>
+  <text x="964" y="260" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" fill="#f5f3ed">Run. Compare. Compile.</text><text x="964" y="279" text-anchor="middle" font-family="Courier New,monospace" font-size="9" fill="#c1cfb7">8 POLICY COMBINATIONS</text>
+  <path d="M964 293V321" stroke="#aebe9f"/>
+  <rect x="802" y="321" width="324" height="95" rx="6" fill="#fffef9" stroke="#d9c7b4"/>
+  <text x="828" y="391" font-family="Georgia,serif" font-size="72" fill="#bf4d2a">2</text><text x="892" y="367" font-family="Arial,Helvetica,sans-serif" font-size="20" fill="#283d33">decisions for you</text><text x="892" y="391" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#697269">with the evidence attached</text>
+  <text x="964" y="459" text-anchor="middle" font-family="Courier New,monospace" font-size="9" fill="#697269" letter-spacing="1">9 QUESTIONS IN. 2 DECISIONS OUT.</text>
+</svg>

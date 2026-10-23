@@ -1,0 +1,354 @@
+{
+  "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+  "input_rows": 8,
+  "trials": [
+    {
+      "id": "ac91f579fe964afe",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "first",
+        "invalid": "quarantine",
+        "email_case": "preserve"
+      },
+      "rows": [
+        {
+          "email": "ada@example.com",
+          "name": "Ada Lovelace",
+          "team": "Research"
+        },
+        {
+          "email": "grace@example.com",
+          "name": "Grace Hopper",
+          "team": "Engineering"
+        },
+        {
+          "email": "lin@example.com",
+          "name": "Lin Chen",
+          "team": "Research"
+        },
+        {
+          "email": "alan@example.com",
+          "name": "Alan Turing",
+          "team": "Engineering"
+        }
+      ],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": false,
+      "duplicate_count": 2,
+      "output_hash": "5b392eae9d207b178bc5d153a89f652410a0a1e40105ba8d0fb0777defb82437"
+    },
+    {
+      "id": "efccb8d6d6e7f4fa",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "first",
+        "invalid": "quarantine",
+        "email_case": "lower"
+      },
+      "rows": [
+        {
+          "email": "ada@example.com",
+          "name": "Ada Lovelace",
+          "team": "Research"
+        },
+        {
+          "email": "grace@example.com",
+          "name": "Grace Hopper",
+          "team": "Engineering"
+        },
+        {
+          "email": "lin@example.com",
+          "name": "Lin Chen",
+          "team": "Research"
+        },
+        {
+          "email": "alan@example.com",
+          "name": "Alan Turing",
+          "team": "Engineering"
+        }
+      ],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": false,
+      "duplicate_count": 2,
+      "output_hash": "5b392eae9d207b178bc5d153a89f652410a0a1e40105ba8d0fb0777defb82437"
+    },
+    {
+      "id": "ae623c3795e40e25",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "first",
+        "invalid": "block",
+        "email_case": "preserve"
+      },
+      "rows": [],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": true,
+      "duplicate_count": 2,
+      "output_hash": "fce962ec46f8defca4d7cf62ca534a18f8b5147e6f4956297ef1cc381451f775"
+    },
+    {
+      "id": "86725c285f12d3a0",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "first",
+        "invalid": "block",
+        "email_case": "lower"
+      },
+      "rows": [],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": true,
+      "duplicate_count": 2,
+      "output_hash": "fce962ec46f8defca4d7cf62ca534a18f8b5147e6f4956297ef1cc381451f775"
+    },
+    {
+      "id": "b98ea4fbc07c1d7e",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "last",
+        "invalid": "quarantine",
+        "email_case": "preserve"
+      },
+      "rows": [
+        {
+          "email": "ada@example.com",
+          "name": "Ada L.",
+          "team": "Systems"
+        },
+        {
+          "email": "grace@example.com",
+          "name": "Grace Hopper",
+          "team": "Engineering"
+        },
+        {
+          "email": "lin@example.com",
+          "name": "Lin C.",
+          "team": "Systems"
+        },
+        {
+          "email": "alan@example.com",
+          "name": "Alan Turing",
+          "team": "Engineering"
+        }
+      ],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": false,
+      "duplicate_count": 2,
+      "output_hash": "c030d2ccf37b2705674b73c98cbe2248b8e440a8eacbd6c230b7b5d87593fd9b"
+    },
+    {
+      "id": "cc551399831dc00d",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "last",
+        "invalid": "quarantine",
+        "email_case": "lower"
+      },
+      "rows": [
+        {
+          "email": "ada@example.com",
+          "name": "Ada L.",
+          "team": "Systems"
+        },
+        {
+          "email": "grace@example.com",
+          "name": "Grace Hopper",
+          "team": "Engineering"
+        },
+        {
+          "email": "lin@example.com",
+          "name": "Lin C.",
+          "team": "Systems"
+        },
+        {
+          "email": "alan@example.com",
+          "name": "Alan Turing",
+          "team": "Engineering"
+        }
+      ],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": false,
+      "duplicate_count": 2,
+      "output_hash": "c030d2ccf37b2705674b73c98cbe2248b8e440a8eacbd6c230b7b5d87593fd9b"
+    },
+    {
+      "id": "7069ee8bb079caf8",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "last",
+        "invalid": "block",
+        "email_case": "preserve"
+      },
+      "rows": [],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": true,
+      "duplicate_count": 2,
+      "output_hash": "fce962ec46f8defca4d7cf62ca534a18f8b5147e6f4956297ef1cc381451f775"
+    },
+    {
+      "id": "d1d59321be96f795",
+      "scope": "f483abfcd72402112c5e50c58fca567cc02a86dac9721f621cc935baf2dd3ecb",
+      "policy": {
+        "duplicates": "last",
+        "invalid": "block",
+        "email_case": "lower"
+      },
+      "rows": [],
+      "quarantined": [
+        {
+          "line": 8,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "not-an-email",
+            "name": "Needs review",
+            "team": "Unknown"
+          }
+        },
+        {
+          "line": 9,
+          "reason": "邮箱为空或格式无效",
+          "row": {
+            "email": "",
+            "name": "Missing email",
+            "team": "Unknown"
+          }
+        }
+      ],
+      "blocked": true,
+      "duplicate_count": 2,
+      "output_hash": "fce962ec46f8defca4d7cf62ca534a18f8b5147e6f4956297ef1cc381451f775"
+    }
+  ]
+}
