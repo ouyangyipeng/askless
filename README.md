@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://ouyangyipeng.github.io/askless/"><img src="docs/images/cover.svg" alt="AskLess — More agency. Fewer interruptions. Run the alternatives. Ask only what matters." width="100%" /></a>
+  <a href="https://oyyp.nexa-lang.com/askless/"><img src="docs/images/cover.svg" alt="AskLess — More agency. Fewer interruptions. Run the alternatives. Ask only what matters." width="100%" /></a>
 </p>
 
 <p align="center">
-  <a href="https://ouyangyipeng.github.io/askless/"><strong>Website & interactive example ↗</strong></a>
+  <a href="https://oyyp.nexa-lang.com/askless/"><strong>Website & interactive example ↗</strong></a>
   &nbsp; · &nbsp;
   <a href="#quickstart">Quickstart</a>
   &nbsp; · &nbsp;
@@ -33,9 +33,9 @@ The first working experiment is a **contact CSV adapter**. Three roles propose q
 
 <br />
 
-<a href="https://ouyangyipeng.github.io/askless/#explore"><img src="docs/images/workbench.jpg" alt="The actual AskLess local workbench: three roles, eight explored branches, and a queue of two evidence-backed decisions." width="100%" /></a>
+<a href="https://oyyp.nexa-lang.com/askless/#explore"><img src="docs/images/workbench.jpg" alt="The actual AskLess local workbench: three roles, eight explored branches, and a queue of two evidence-backed decisions." width="100%" /></a>
 
-<p align="center"><sub>The actual local workbench · Chinese interface in v0.1 · <a href="https://ouyangyipeng.github.io/askless/#explore">Explore the interactive example</a></sub></p>
+<p align="center"><sub>The actual local workbench · Chinese interface in v0.1 · <a href="https://oyyp.nexa-lang.com/askless/#explore">Explore the interactive example</a></sub></p>
 
 ## Quickstart
 

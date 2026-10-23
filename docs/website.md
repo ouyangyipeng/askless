@@ -1,6 +1,6 @@
 # Website maintenance
 
-The official website is published at <https://ouyangyipeng.github.io/askless/>.
+The official website is published at <https://oyyp.nexa-lang.com/askless/>.
 
 ## Source and build
 
@@ -37,6 +37,10 @@ The test compares the stored scope, input count, and every saved branch to the c
 ## Publish
 
 GitHub Pages is configured to publish from **`main` / `docs`**. The empty `docs/.nojekyll` file marks the built output as static content. A push to the publishing source triggers GitHub's managed Pages workflow. No custom workflow or deployment secrets are required.
+
+The project inherits the account's existing Pages domain, `oyyp.nexa-lang.com`.
+The standard `ouyangyipeng.github.io/askless/` URL redirects to it. HTTPS is
+enforced for this project.
 
 Check the repository's Actions tab and Pages settings after publishing. Verify the public URL, image loading, all four sample policy selections, and the installation copy button. For a fork, update the repository URLs, canonical metadata, social image URL, and Vite base path before deployment.
 

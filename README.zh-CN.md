@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://ouyangyipeng.github.io/askless/"><img src="docs/images/cover.svg" alt="AskLess — 让 Agent 先试跑，再把有意义的决定交给你。" width="100%" /></a>
+  <a href="https://oyyp.nexa-lang.com/askless/"><img src="docs/images/cover.svg" alt="AskLess — 让 Agent 先试跑，再把有意义的决定交给你。" width="100%" /></a>
 </p>
 
 <p align="center">
-  <a href="https://ouyangyipeng.github.io/askless/"><strong>官网与交互示例 ↗</strong></a>
+  <a href="https://oyyp.nexa-lang.com/askless/"><strong>官网与交互示例 ↗</strong></a>
   &nbsp; · &nbsp; <a href="#五分钟体验">快速开始</a>
   &nbsp; · &nbsp; <a href="docs/architecture.md">架构说明</a>
   &nbsp; · &nbsp; <a href="README.md">English</a>
