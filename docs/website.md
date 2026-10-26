@@ -8,6 +8,7 @@ The official website is published at <https://oyyp.nexa-lang.com/askless/>.
 - `web/site/style.css`: shared visual tokens, layout, responsive rules, reduced motion.
 - `web/site/SampleExplorer.tsx`: interactive walkthrough of saved executor outputs.
 - `web/site/sample.json`: eight deterministic policy outcomes from the included CSV.
+- `web/site/OrderExplorer.tsx` / `orders.json`: the Python order-workflow walkthrough and all eight saved branch outcomes.
 - `docs/images/`: public brand artwork, actual workbench screenshot, social preview.
 
 The website reuses the workbench's Vite, TypeScript, and React dependencies. Main content is static HTML and remains readable without JavaScript. The sample explorer uses React. There are no analytics, remote fonts, LLM calls, or credential inputs in the public page.
@@ -27,12 +28,13 @@ After changing the input fixture or executor semantics:
 
 ```bash
 uv run python scripts/export_site_sample.py
+uv run python scripts/export_order_sample.py
 uv run pytest -q tests/test_site_sample.py
 pnpm --dir web test
 pnpm --dir web site:build
 ```
 
-The test compares the stored scope, input count, and every saved branch to the current executor. Timing fields are omitted because they vary between runs.
+The tests compare stored scope, input data/count, decisions and every saved branch to the current executors. Timing fields are omitted because they vary between runs. The order sample uses three declared contracts; live model questions are measured separately in local reports.
 
 ## Publish
 

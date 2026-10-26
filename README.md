@@ -7,54 +7,104 @@
   &nbsp; · &nbsp;
   <a href="#quickstart">Quickstart</a>
   &nbsp; · &nbsp;
-  <a href="docs/architecture.md">Architecture</a>
+  <a href="docs/python-sdk.md">Python SDK</a>
   &nbsp; · &nbsp;
   <a href="README.zh-CN.md">中文</a>
 </p>
 
-<p align="center"><sub>LOCAL-FIRST &nbsp; / &nbsp; MIT LICENSED &nbsp; / &nbsp; EXPERIMENTAL v0.1</sub></p>
+<p align="center"><sub>LOCAL-FIRST &nbsp; / &nbsp; MIT LICENSED &nbsp; / &nbsp; PYTHON SDK v0.2</sub></p>
 
 <br />
 
 ## Your attention deserves a better interface.
 
-Agent teams can produce a lot of questions. Some repeat the same decision. Some lead to exactly the same result. Some really need you.
+**Let agents spend compute before they spend your attention.**
 
-**AskLess runs the alternatives before asking.** It groups questions by explicit decision contracts, compares real execution results, and presents the choices that change the outcome—with evidence attached.
+AskLess runs finite alternatives, compares their actual outputs, and brings you the choices that change the result—with evidence attached. Embed it in a Python data workflow, inspect the remaining decisions, and verify the selected policy before continuing.
 
-The first working experiment is a **contact CSV adapter**. Three roles propose questions, one deterministic executor explores every policy combination, and you make the remaining decisions in a local workbench.
+**New in v0.2:** a typed Python SDK, an order-data agent, and portable HTML/JSON reports. Your first run needs Python and uv. The original contact CSV workbench remains available.
 
 | Collect | Explore | Decide |
 | :--- | :--- | :--- |
-| **9 questions** from three roles | **8 complete policy combinations** | **2 human decisions** in the included sample |
-| Shared contracts bring repeated questions together. | Outputs, quarantined rows, and blocking status are compared. | One equivalent choice is resolved for this exact input. |
+| **3 declared choices** in the order workflow | **8 complete policy combinations** | **2 human decisions** in the included sample |
+| Duplicates · cancellations · rounding | Totals, accepted orders and discarded records are compared. | Rounding is equivalent on this input; the other two choices remain. |
 
-<sub>These counts come from the included eight-row sample and the fixed three-role, three-contract protocol. Human attention savings and task quality are open evaluation questions.</sub>
+<sub>Six synthetic input rows. Counts describe this workflow's contracts. Live model questions, execution cost and final-output equality are recorded separately; human time is an open evaluation question.</sub>
 
 <br />
 
-<a href="https://oyyp.nexa-lang.com/askless/#explore"><img src="docs/images/workbench.jpg" alt="The actual AskLess local workbench: three roles, eight explored branches, and a queue of two evidence-backed decisions." width="100%" /></a>
+<a href="https://oyyp.nexa-lang.com/askless/#workflow"><img src="docs/images/orders.jpg" alt="AskLess order workflow: three declared choices become two human decisions; the chosen policy produces four orders totalling USD 120.00." width="100%" /></a>
 
-<p align="center"><sub>The actual local workbench · Chinese interface in v0.1 · <a href="https://oyyp.nexa-lang.com/askless/#explore">Explore the interactive example</a></sub></p>
+<p align="center"><sub>Actual SDK outputs in the interactive walkthrough · <a href="https://oyyp.nexa-lang.com/askless/#workflow">Try the choices ↗</a></sub></p>
 
 ## Quickstart
 
-You need **Python 3.12+**, [uv](https://docs.astral.sh/uv/getting-started/installation/), **Node.js 24.15+** (or 22.22.2+), and **pnpm 12**. Development is verified with Node.js 24.
+You need **Python 3.12+** and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
 ```bash
 git clone https://github.com/ouyangyipeng/askless.git
 cd askless
-./run.sh
+uv sync --frozen
+uv run python -m askless.demo \
+  --choose duplicates=last \
+  --choose cancelled=exclude
 ```
 
-Open **[127.0.0.1:8765](http://127.0.0.1:8765)**. The script installs locked dependencies, builds the workbench, and starts one local Python service. Use `Ctrl+C` to stop; use `./run.sh --port 8766` to change the port.
+Open the **`report.html` path printed in your terminal**. The report shows every decision, witness outputs, execution cost and final result. `report.json` contains the full evidence; `result.json` contains four included orders totalling **USD 120.00**. Reports go into a new local `artifacts/orders-*` directory on each run.
 
-**Start without a key.** Choose **离线演示** (offline demo) in the workbench. It uses fixed role questions and runs all eight branches, decision compilation, policy validation, and CSV export locally.
+The default mode replays one declared question per contract and makes **zero LLM calls**. Use `--input path/to/orders.json` for your own data; omit `--choose` to answer interactively. In noninteractive use, missing choices produce a pending report and exit code 2. See the [input format and CLI guide](docs/python-sdk.md#try-the-included-workflow).
 
-The sample includes eight synthetic rows. Keeping the last duplicate and quarantining invalid emails yields **four contacts and two quarantined rows**. Expand a decision to compare branch outputs; download the CSV and full JSON evidence bundle after completion.
+## Put it inside your agent
 
-<details>
-<summary><strong>Connect a real LLM</strong></summary>
+```python
+from pathlib import Path
+
+from askless import explore
+from askless.orders import ORDER_DECISIONS, load_orders, preview_orders
+
+data = load_orders(Path("examples/orders.json"))
+run = explore(
+    adapter="order-summary/v1",
+    inputs=data,
+    decisions=ORDER_DECISIONS,
+    preview=preview_orders,
+)
+
+for group in run.pending:
+    print(group.decision.prompt, group.decision.options)
+
+# Collect these answers from your user, then verify the selected result.
+result = run.resolve({"duplicates": "last", "cancelled": "exclude"}, inputs=data)
+print(result.output)
+```
+
+Replace the decisions and preview with your own pure function. `Decision` supports 2–8 options; `AgentQuestion` attaches an actual agent's question to a contract. All registered contracts are checked even if the agent omits one. See the [complete custom-function example](docs/python-sdk.md#wrap-your-own-function).
+
+```text
+  Your input + finite choices + pure preview
+                      │
+            Execute every combination
+                      │
+          Compare every decision interaction
+                      │
+            ┌─────────┴─────────┐
+            ▼                   ▼
+      Equal outcomes      Different outcomes
+      Resolve locally     Ask with witnesses
+            └─────────┬─────────┘
+                      ▼
+           Replay the selected policy
+                      │
+           Exact output match → continue
+```
+
+**The trade-off is visible.** The order sample takes eight previews plus one final replay, compared with one direct execution after all choices are known. The report measures both paths using the same input and final policy.
+
+**The scope is explicit.** Equality covers the complete JSON result on the input snapshot and across every policy interaction. Previews run trusted code in your process. The SDK bounds combinations and retained JSON; your application controls callback time, peak memory and side effects. [Execution contract →](docs/python-sdk.md#execution-and-resource-contract)
+
+## Connect a real LLM
+
+Add `--live` to the demo command. The order agent proposes relevant questions from aggregate statistics; it may ask about any subset of the contracts. All previews and final verification stay local.
 
 The backend reads credentials from its process environment. Export your credential through your usual secure shell setup before launching. Supported configuration:
 
@@ -66,11 +116,20 @@ The backend reads credentials from its process environment. Export your credenti
 
 The provider must support Chat Completions, JSON output, and `enable_thinking: false`. Configuration is read from environment variables; `.env` and shell configuration files are not loaded automatically.
 
-A successful live run typically makes six requests: three question proposals and three policy acknowledgments. Each request allows one retry and 45-second connection/read/write timeouts. Model errors preserve completed evidence and display a failed state. Usage shown in the app covers successfully parsed, recorded stages; consult the provider for billing and failed-request usage.
+A successful order-agent run normally makes **one request**, with one allowed retry and 45-second connection/read/write timeouts. The model receives the fixed task, contract definitions and aggregate counts, while raw order IDs and amounts remain local. Reports contain successfully decoded request/token usage. Provider billing covers failed requests.
 
-</details>
+In the [recorded live run](docs/validation-2026-10-26.md), the model asked two questions and the compiler retained both. The offline contract replay starts with three declared questions and resolves rounding. These are separate traces, with separate counts.
 
-## The mechanism
+## The contact workbench
+
+For the original visual CSV experiment, install **Node.js 24.15+** (or 22.22.2+) and **pnpm 12**, then run `./run.sh` and open **[127.0.0.1:8765](http://127.0.0.1:8765)**. Choose **离线演示** for a key-free run. Use `Ctrl+C` to stop or `./run.sh --port 8766` for another port.
+
+![The contact CSV workbench](docs/images/workbench.jpg)
+
+Three roles each ask about three fixed contracts. The included eight-row CSV produces nine protocol questions, two remaining decisions and one equivalent choice. A live run usually makes six model requests: three proposals and three policy receipts.
+
+<details>
+<summary><strong>Contact workflow mechanism and contracts</strong></summary>
 
 ```text
   Data engineer ──────┐
@@ -96,7 +155,7 @@ A successful live run typically makes six requests: three question proposals and
 
 **A decision travels with its evidence.** The same confirmed policy is sent to all three roles. Each must explicitly acknowledge every field. The shared CSV executor reruns the policy, and output hashes must match before delivery completes.
 
-## What you can run today
+### Contact adapter contracts
 
 | Contract | Options | Meaning |
 | :--- | :--- | :--- |
@@ -104,9 +163,15 @@ A successful live run typically makes six requests: three question proposals and
 | Invalid emails | Quarantine / block | Export valid rows, or block the entire batch. Both retain invalid rows for review. |
 | Email case | Preserve / lowercase | Change the export spelling. The included sample is already lowercase, so this choice is equivalent. |
 
-v0.1 uses fixed contracts and one trusted executor shared by all three roles. General coding-agent integrations, generated-code execution, cross-task preference learning, and automatic discovery of higher-level decisions are future work. New adapters need their own contracts, controlled execution, and observable result definitions.
+The contact workbench retains its fixed contracts and shared trusted executor. The v0.2 SDK supports custom Python previews separately. General coding-agent integrations, generated-code isolation and cross-task preference learning are future work.
+
+</details>
 
 ## Local data, bounded resources
+
+The **Python SDK** stores snapshots in memory: at most 512 KiB input, 64 KiB per output and 4 MiB of total preview outputs, plus metadata. The default is 32 complete branches; `max_branches` can range from 1 to 256. It rejects larger spaces before running previews. The demo writes only to the requested report directory and refuses to overwrite an existing one.
+
+The **contact workbench** uses these separate limits:
 
 - **Local storage:** inputs, branch outputs, decisions, and receipts live in `.askless/runs.sqlite3`. Use `--data-dir` to choose another location.
 - **Model input:** your task description, role, aggregate statistics, policy contracts, and confirmed result counts/status. Raw CSV rows stay local. Information entered into the task description goes to the configured provider.
@@ -137,6 +202,9 @@ Run `pnpm --dir web dev` alongside the Python server for workbench development. 
 
 | Location | Responsibility |
 | :--- | :--- |
+| `src/askless/sdk.py` | Finite contracts, input snapshots, exhaustive comparison, verified replay |
+| `src/askless/orders.py` · `order_agent.py` | Order semantics and optional real model questions |
+| `src/askless/demo.py` · `reporting.py` | CLI workflow, baseline comparison, portable evidence reports |
 | `src/askless/engine.py` | CSV validation, branch execution, comparison, question compilation |
 | `src/askless/agents.py` · `llm.py` | Role protocol, model calls, explicit acknowledgments |
 | `src/askless/service.py` · `store.py` | Lifecycle, transactions, scope, concurrency, storage limits |
@@ -149,7 +217,7 @@ Run `pnpm --dir web dev` alongside the Python server for workbench development. 
 
 We are interested in small adapters with clear result semantics, realistic agent traces, and evaluations of human attention and task quality. Start with the [contribution guide](CONTRIBUTING.md), [architecture](docs/architecture.md), or a [new issue](https://github.com/ouyangyipeng/askless/issues).
 
-The website's sample is generated from the actual executor and checked against it in tests. [Website maintenance](docs/website.md) explains how to rebuild and publish it.
+Both website samples are generated from the actual executors and checked against them in tests. [Website maintenance](docs/website.md) explains how to rebuild and publish them.
 
 ---
 
