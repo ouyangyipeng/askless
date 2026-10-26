@@ -125,6 +125,85 @@
   }
 }
 @layer components {
+  .workflow-caption,
+  .workflow-cost {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 15px 0;
+  }
+  .workflow-caption > span:last-child {
+    color: var(--muted);
+    font: 10px var(--mono);
+  }
+  .workflow-cost > span {
+    flex-shrink: 0;
+    font: 9px var(--mono);
+    color: var(--orange);
+    letter-spacing: 0.08em;
+  }
+  .workflow-cost p {
+    max-width: 670px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .order-total {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .order-total > span {
+    font: 11px var(--mono);
+    color: var(--muted);
+  }
+  .order-total strong {
+    font: 68px/1.1 var(--serif);
+    letter-spacing: -0.06em;
+  }
+  .order-count {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 9px 0 25px;
+  }
+  .order-table th:last-child,
+  .order-table td:last-child {
+    text-align: right;
+  }
+  .integration-section {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 90px;
+    align-items: center;
+  }
+  .integration-section .text-link {
+    margin-top: 28px;
+    display: inline-flex;
+  }
+  .sdk-code {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--white);
+  }
+  .sdk-code .terminal-heading {
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding: 17px 24px;
+  }
+  .sdk-code pre {
+    margin: 0;
+    padding: 24px;
+    overflow-x: auto;
+    font: 12px/1.85 var(--mono);
+  }
+  .sdk-foot {
+    border-top: 1px solid var(--line);
+    padding: 15px 24px;
+    font: 9px var(--mono);
+    color: var(--muted);
+  }
   .site-header {
     display: flex;
     align-items: center;
@@ -895,6 +974,34 @@
   }
 }
 @layer responsive {
+  @media (max-width: 900px) {
+    .integration-section {
+      gap: 36px;
+    }
+  }
+  @media (max-width: 700px) {
+    .integration-section {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+    }
+    .workflow-caption,
+    .workflow-cost {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .order-total strong {
+      font-size: 56px;
+    }
+    .sdk-code pre {
+      font-size: 10px;
+      padding: 18px;
+    }
+    .sdk-foot {
+      font-size: 8px;
+      padding: 13px 18px;
+    }
+  }
   @media (min-width: 1500px) {
     h1 {
       font-size: 92px;

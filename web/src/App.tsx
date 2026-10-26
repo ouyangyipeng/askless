@@ -738,7 +738,7 @@ export default function App() {
             </>
           )}
           <footer>
-            <span>ASKLESS / v{config?.version ?? "0.1.0"}</span>
+            <span>ASKLESS / v{config?.version ?? "0.2.0"}</span>
             <span>
               先看证据，再做决定。
               <Sparkles size={12} />

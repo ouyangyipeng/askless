@@ -7,7 +7,7 @@
     <title>AskLess — More agency. Fewer interruptions.</title>
     <meta
       name="description"
-      content="The open-source decision compiler for agents. Run the alternatives, compare real outputs, and ask only what matters. Start locally with the contact CSV adapter."
+      content="A Python decision compiler for data agents. Run bounded alternatives, compare exact outputs, and keep the decisions that matter. Try the order workflow without an API key."
     />
     <link rel="canonical" href="https://oyyp.nexa-lang.com/askless/" />
     <meta
@@ -47,7 +47,7 @@
         ><span>askless<span class="brand-dot">.</span></span></a
       >
       <nav aria-label="Main navigation">
-        <a href="#mechanism">The idea</a><a href="#explore">Explore</a
+        <a href="#integrate">Python SDK</a><a href="#workflow">Explore</a
         ><a class="nav-source" href="https://github.com/ouyangyipeng/askless"
           >GitHub <span aria-hidden="true">↗</span></a
         >
@@ -57,30 +57,31 @@
       <section class="hero wrap" aria-labelledby="hero-title">
         <div class="hero-copy">
           <div class="eyebrow">
-            <span class="status-dot"></span> An open-source experiment · v0.1
+            <span class="status-dot"></span> Now inside your Python workflow ·
+            v0.2
           </div>
           <h1 id="hero-title">
             More agency.<br />Fewer <em>interruptions.</em>
           </h1>
           <p class="hero-description">
-            Your agents have questions. Let them run the alternatives first.
-            Bring you the decisions that actually change the outcome.
+            Let agents spend compute before they spend your attention. Preview
+            the alternatives. Compare real outputs. Make the important calls.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#start"
-              >Run it locally <span aria-hidden="true">↗</span></a
-            ><a class="text-link" href="#explore"
+              >Try the Python workflow <span aria-hidden="true">↗</span></a
+            ><a class="text-link" href="#workflow"
               >See the idea in action <span aria-hidden="true">↓</span></a
             >
           </div>
           <p class="hero-note">
-            Local-first. MIT licensed. Built for a little more focus.
+            Local-first · MIT · First run needs no API key or frontend build.
           </p>
         </div>
         <div
           class="compiler-visual"
           role="img"
-          aria-label="In the included sample: three agents ask nine questions. Eight policy combinations are executed, leaving two human decisions and one equivalent choice resolved automatically."
+          aria-label="In the order sample: three declared choices, eight executed combinations, two human decisions. Rounding resolves automatically for this input."
         >
           <div class="visual-heading">
             <span>THE DECISION COMPILER</span
@@ -88,16 +89,16 @@
           </div>
           <div class="agent-stream">
             <div class="agent-lane">
-              <span>DATA ENGINEER</span>
-              <div><i>?</i><i>?</i><i>?</i></div>
+              <span>DUPLICATES</span>
+              <div><i>?</i></div>
             </div>
             <div class="agent-lane">
-              <span>QUALITY REVIEWER</span>
-              <div><i>?</i><i>?</i><i>?</i></div>
+              <span>CANCELLATIONS</span>
+              <div><i>?</i></div>
             </div>
             <div class="agent-lane">
-              <span>DELIVERY LEAD</span>
-              <div><i>?</i><i>?</i><i>?</i></div>
+              <span>ROUNDING</span>
+              <div><i>?</i></div>
             </div>
           </div>
           <svg class="flow-lines" viewBox="0 0 440 85" aria-hidden="true">
@@ -129,11 +130,12 @@
             <span class="output-arrow">↗</span>
           </div>
           <div class="auto-output">
-            <span>✓</span> Email case: equivalent on this input
+            <span>✓</span> Rounding: equivalent on this input
             <span class="auto-tag">RESOLVED</span>
           </div>
           <div class="visual-foot">
-            <span>9 QUESTIONS IN</span><span>YOUR ATTENTION, PRESERVED.</span>
+            <span>3 DECLARED CHOICES</span
+            ><span>ORDER SUMMARY / PYTHON SDK</span>
           </div>
         </div>
       </section>
@@ -166,9 +168,8 @@
             <div>
               <h3>Make the question executable.</h3>
               <p>
-                Three roles ask within explicit policy contracts. Shared
-                contracts and an exact input hash bring repeated questions
-                together.
+                Declare finite choices and supply a pure Python preview. Bind
+                each question to a contract and a complete input snapshot.
               </p>
             </div>
           </article>
@@ -177,8 +178,9 @@
             <div>
               <h3>Look at what actually changes.</h3>
               <p>
-                Execute all eight policy combinations. Compare outputs,
-                quarantined rows, and blocking status across every interaction.
+                Execute every combination within your budget. Compare exact
+                declared outputs across every interaction. Failed previews stop
+                the run.
               </p>
             </div>
           </article>
@@ -188,11 +190,95 @@
               <h3>Return the meaningful decisions.</h3>
               <p>
                 Resolve equivalent choices for this input. Show you the
-                differences for the rest, then propagate your policy and verify
-                the result.
+                differences for the rest, then replay your selected policy and
+                check that its output still matches.
               </p>
             </div>
           </article>
+        </div>
+      </section>
+      <section
+        class="explorer-section"
+        id="workflow"
+        aria-labelledby="workflow-title"
+      >
+        <div class="wrap">
+          <div class="explorer-heading">
+            <div>
+              <span class="eyebrow">02 / RUN A DATA WORKFLOW</span>
+              <h2 id="workflow-title">
+                Small choices.<br /><em>Real consequences.</em>
+              </h2>
+            </div>
+            <p>
+              A duplicate order. A cancellation. A rounding choice. See which
+              decisions change the summary before you answer.
+            </p>
+          </div>
+          <div id="order-explorer">
+            <p class="sample-fallback">
+              The sample retains two decisions: duplicate order selection and
+              cancellation handling. Rounding is equivalent for this input.
+            </p>
+          </div>
+          <p class="sample-note">
+            Synthetic order data · All eight outputs generated by the Python SDK
+            and checked in tests. This page displays saved executions; run the
+            CLI on your own data for fresh evidence.
+          </p>
+        </div>
+      </section>
+      <section
+        class="integration-section wrap section-space"
+        id="integrate"
+        aria-labelledby="integrate-title"
+      >
+        <div class="section-intro">
+          <span class="eyebrow">03 / A SMALL PYTHON INTERFACE</span>
+          <h2 id="integrate-title">
+            Your function.<br /><em>Fewer open questions.</em>
+          </h2>
+          <p>
+            Keep your agent framework. Give AskLess the choices, a JSON input
+            snapshot, and a trusted preview function.
+          </p>
+          <p>
+            Inspect <code>run.pending</code>, collect the answers, then replay
+            the selected policy. The order adapter below is included.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/ouyangyipeng/askless/blob/main/docs/python-sdk.md"
+            >Read the integration guide <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="sdk-code">
+          <div class="terminal-heading">
+            <span>EXPLORE → DECIDE → VERIFY</span><span>PYTHON</span>
+          </div>
+          <pre><code>from pathlib import Path
+from askless import explore
+from askless.orders import (
+    ORDER_DECISIONS, load_orders, preview_orders,
+)
+
+data = load_orders(Path("examples/orders.json"))
+run = explore(
+    adapter="order-summary/v1",
+    inputs=data,
+    decisions=ORDER_DECISIONS,
+    preview=preview_orders,
+)
+
+# Collect the remaining choices from the user.
+result = run.resolve(
+    {"duplicates": "last", "cancelled": "exclude"},
+    inputs=data,
+)
+print(result.output["total"])  # 120.00</code></pre>
+          <div class="sdk-foot">
+            Bounded exploration · immutable evidence · exact-output replay
+          </div>
         </div>
       </section>
       <section
@@ -203,7 +289,7 @@
         <div class="wrap">
           <div class="explorer-heading">
             <div>
-              <span class="eyebrow">02 / A SMALL, REAL EXAMPLE</span>
+              <span class="eyebrow">04 / THE CONTACT EXPERIMENT</span>
               <h2 id="explore-title">
                 Same input.<br /><em>Different consequences.</em>
               </h2>
@@ -237,7 +323,7 @@
       >
         <div class="workbench-heading">
           <div>
-            <span class="eyebrow">03 / THE LOCAL WORKBENCH</span>
+            <span class="eyebrow">05 / THE CONTACT WORKBENCH</span>
             <h2 id="workbench-title">
               Every decision<br />has a <em>paper trail.</em>
             </h2>
@@ -297,19 +383,19 @@
       <section class="scope-section wrap" aria-labelledby="scope-title">
         <span class="eyebrow">A WORKING BEGINNING</span>
         <div>
-          <h2 id="scope-title">
-            One adapter today.<br />A bigger question ahead.
-          </h2>
+          <h2 id="scope-title">Bring your workflow.<br />Keep the evidence.</h2>
           <p>
-            v0.1 is a bounded contact CSV experiment: three roles, three fixed
-            policy contracts, one shared deterministic executor. In the included
-            sample, nine protocol-generated questions become two human
-            decisions.
+            v0.2 adds a Python SDK, a runnable order-data agent, and portable
+            HTML/JSON reports. The contact workbench remains available. Your
+            preview defines the observable outcome; equality covers that
+            complete declared result on the current input.
           </p>
           <p>
-            The next research question: how far can this approach travel into
-            richer agent workflows? General coding-agent integrations, new
-            adapters, and measured attention savings are open directions.
+            Previews run trusted application code in your process. The SDK
+            bounds combinations and stored results; your application owns
+            callback execution time and external side effects. General
+            coding-agent integrations and measured human attention savings
+            remain open work.
           </p>
           <a
             class="text-link"
@@ -327,8 +413,8 @@
               Give your attention<br /><em>some space.</em>
             </h2>
             <p>
-              Clone it. Start it. Bring a small CSV.<br />Your first run can be
-              completely offline.
+              Clone it. Run the order workflow.<br />Open the report. Then bring
+              your own data.
             </p>
             <a
               class="button light"
@@ -345,13 +431,16 @@
             </div>
             <pre><code id="install-command">git clone https://github.com/ouyangyipeng/askless.git
 cd askless
-./run.sh</code></pre>
+uv sync --frozen
+uv run python -m askless.demo \
+  --choose duplicates=last \
+  --choose cancelled=exclude</code></pre>
             <div class="terminal-foot">
-              <span class="status-dot"></span> Then open
-              <span class="local-address">127.0.0.1:8765</span>
+              <span class="status-dot"></span> Open the report.html path printed
+              in your terminal
             </div>
             <p class="requirements">
-              Python 3.12+ · uv · Node 24.15+ · pnpm 12<br /><a
+              Python 3.12+ · uv · zero model calls by default<br /><a
                 href="https://github.com/ouyangyipeng/askless#quickstart"
                 >Setup &amp; model configuration
                 <span aria-hidden="true">↗</span></a

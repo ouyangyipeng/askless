@@ -1,4 +1,12 @@
-# AskLess 0.1 架构与边界
+# AskLess 架构与边界
+
+v0.2 新增独立的 Python SDK 与订单数据 Agent。`sdk.py` 接收可信试跑函数，
+保存 JSON 快照并完整比较有界策略空间；`orders.py` 定义订单语义，
+`order_agent.py` 提供可选模型提问，`demo.py` / `reporting.py` 交付命令行与本地证据报告。
+接口、比较规则和资源边界见 [Python 接入指南](python-sdk.md)。
+
+下文描述保留兼容的联系人工作台。其 HTTP API 和 SQLite 数据格式保持原有结构，
+新 SDK 的运行对象与报告独立于工作台历史。
 
 ## 信任与数据路径
 

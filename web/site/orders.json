@@ -1,0 +1,502 @@
+{
+  "adapter": "order-summary/v1",
+  "scope": "1f444e6d5f8d90821d854a2fb74906bc00bfb109ad7f4c07325099aebd28591b",
+  "input": [
+    {
+      "order_id": "A100",
+      "amount": "35.00",
+      "status": "paid"
+    },
+    {
+      "order_id": "A100",
+      "amount": "42.00",
+      "status": "paid"
+    },
+    {
+      "order_id": "A101",
+      "amount": "12.50",
+      "status": "cancelled"
+    },
+    {
+      "order_id": "A102",
+      "amount": "19.99",
+      "status": "paid"
+    },
+    {
+      "order_id": "A103",
+      "amount": "8.01",
+      "status": "paid"
+    },
+    {
+      "order_id": "A104",
+      "amount": "50.00",
+      "status": "paid"
+    }
+  ],
+  "decisions": [
+    {
+      "key": "duplicates",
+      "prompt": "Which occurrence of a repeated order ID should be kept?",
+      "status": "pending",
+      "comparisons_checked": 4
+    },
+    {
+      "key": "cancelled",
+      "prompt": "Should cancelled orders contribute to the summary?",
+      "status": "pending",
+      "comparisons_checked": 4
+    },
+    {
+      "key": "rounding",
+      "prompt": "Round each order to cents, or round only the total?",
+      "status": "auto",
+      "comparisons_checked": 4
+    }
+  ],
+  "trials": [
+    {
+      "id": "4d9230b08256fdcf",
+      "policy": {
+        "duplicates": "first",
+        "cancelled": "exclude",
+        "rounding": "per_order"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          }
+        ],
+        "order_count": 4,
+        "orders": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "113.00"
+      },
+      "output_hash": "8480ff492ed6b35b8d6cec50631a50c38e6734e8c23e78ce9b2bef40bc5616ab"
+    },
+    {
+      "id": "09a81eeda2111929",
+      "policy": {
+        "duplicates": "first",
+        "cancelled": "exclude",
+        "rounding": "at_total"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          }
+        ],
+        "order_count": 4,
+        "orders": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "113.00"
+      },
+      "output_hash": "8480ff492ed6b35b8d6cec50631a50c38e6734e8c23e78ce9b2bef40bc5616ab"
+    },
+    {
+      "id": "ca9da82ab2c08c7e",
+      "policy": {
+        "duplicates": "first",
+        "cancelled": "include",
+        "rounding": "per_order"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [],
+        "order_count": 5,
+        "orders": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          },
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "125.50"
+      },
+      "output_hash": "301d6ef4c42d032fbb1f1ff3b2374855da0ecfc37760cb668b79f84cbad97d30"
+    },
+    {
+      "id": "747af85cf566d0ca",
+      "policy": {
+        "duplicates": "first",
+        "cancelled": "include",
+        "rounding": "at_total"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [],
+        "order_count": 5,
+        "orders": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          },
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "125.50"
+      },
+      "output_hash": "301d6ef4c42d032fbb1f1ff3b2374855da0ecfc37760cb668b79f84cbad97d30"
+    },
+    {
+      "id": "fa084e98b3bea67a",
+      "policy": {
+        "duplicates": "last",
+        "cancelled": "exclude",
+        "rounding": "per_order"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          }
+        ],
+        "order_count": 4,
+        "orders": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "120.00"
+      },
+      "output_hash": "3a0a3b56f98f1e54d93e9b2dc0a5b94c1da4699dc257f6af2623caa95bb8455c"
+    },
+    {
+      "id": "9ffd00f5ce59ff30",
+      "policy": {
+        "duplicates": "last",
+        "cancelled": "exclude",
+        "rounding": "at_total"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          }
+        ],
+        "order_count": 4,
+        "orders": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "120.00"
+      },
+      "output_hash": "3a0a3b56f98f1e54d93e9b2dc0a5b94c1da4699dc257f6af2623caa95bb8455c"
+    },
+    {
+      "id": "2ef8a3b9e82fcff5",
+      "policy": {
+        "duplicates": "last",
+        "cancelled": "include",
+        "rounding": "per_order"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [],
+        "order_count": 5,
+        "orders": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          },
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "132.50"
+      },
+      "output_hash": "7c6fc40eac96f8f1a92de5de499e9b71e0748df18a877afbee3f658ceb697007"
+    },
+    {
+      "id": "a6355437a321e8c2",
+      "policy": {
+        "duplicates": "last",
+        "cancelled": "include",
+        "rounding": "at_total"
+      },
+      "output": {
+        "currency": "USD",
+        "discarded_duplicates": [
+          {
+            "amount": "35.00",
+            "order_id": "A100",
+            "source_row": 1,
+            "status": "paid"
+          }
+        ],
+        "excluded_cancelled": [],
+        "order_count": 5,
+        "orders": [
+          {
+            "amount": "42.00",
+            "order_id": "A100",
+            "source_row": 2,
+            "status": "paid"
+          },
+          {
+            "amount": "12.50",
+            "order_id": "A101",
+            "source_row": 3,
+            "status": "cancelled"
+          },
+          {
+            "amount": "19.99",
+            "order_id": "A102",
+            "source_row": 4,
+            "status": "paid"
+          },
+          {
+            "amount": "8.01",
+            "order_id": "A103",
+            "source_row": 5,
+            "status": "paid"
+          },
+          {
+            "amount": "50.00",
+            "order_id": "A104",
+            "source_row": 6,
+            "status": "paid"
+          }
+        ],
+        "total": "132.50"
+      },
+      "output_hash": "7c6fc40eac96f8f1a92de5de499e9b71e0748df18a877afbee3f658ceb697007"
+    }
+  ]
+}
