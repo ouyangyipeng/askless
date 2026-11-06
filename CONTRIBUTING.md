@@ -1,10 +1,10 @@
 # Contributing to AskLess
 
-AskLess explores how executable evidence can reduce interruptions in agent workflows. The current implementation is a bounded contact CSV adapter. Contributions that make the mechanism clearer, more reliable, or easier to evaluate are welcome.
+AskLess explores how executable evidence can reduce interruptions in agent workflows. v0.2 provides a Python decision SDK, an order-summary agent and the original contact CSV workbench. Contributions that make the mechanism clearer, more reliable, or easier to evaluate are welcome.
 
 ## Useful starting points
 
-- Add a small adapter with explicit choices, controlled execution, and observable results.
+- Add a small adapter using the [Python SDK](docs/python-sdk.md), with explicit choices, pure preview execution and complete observable results.
 - Contribute synthetic examples where choices interact and a local comparison would miss a meaningful difference.
 - Design an evaluation that measures human decision time alongside task quality.
 - Improve accessibility, localization, or the evidence inspection experience.
@@ -37,4 +37,4 @@ Types include `feat`, `bug`, `doc`, `style`, `refactor`, and `chore`. Use `[bug]
 
 ## Website changes
 
-See [docs/website.md](docs/website.md). Keep product claims tied to implemented behavior and reproducible examples. Changes to the CSV executor may require regenerating the website sample.
+See [docs/website.md](docs/website.md). Keep product claims tied to implemented behavior and reproducible examples. Changes to either executor require checking its generated website sample.
