@@ -1,11 +1,14 @@
 import { createRoot } from "react-dom/client";
 import { SampleExplorer } from "./SampleExplorer";
 import { OrderExplorer } from "./OrderExplorer";
+import { ExportExplorer } from "./ExportExplorer";
 
 const mount = document.getElementById("sample-explorer");
 if (mount) createRoot(mount).render(<SampleExplorer />);
 const orderMount = document.getElementById("order-explorer");
 if (orderMount) createRoot(orderMount).render(<OrderExplorer />);
+const exportMount = document.getElementById("export-explorer");
+if (exportMount) createRoot(exportMount).render(<ExportExplorer />);
 
 const copyButton = document.getElementById("copy-command");
 const command = document.getElementById("install-command");

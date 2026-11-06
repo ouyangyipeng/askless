@@ -1,5 +1,55 @@
 # AskLess 架构与边界
 
+## v0.3 文件预览与条件决策
+
+`sdk.py` 新增不可变的 `DecisionProgress`。每次用户回答后，保留符合已确认答案的
+完整分支集合，再比较剩余选择。该步骤复用原有证据；全部必要选择确定后才重新
+执行一次最终策略。原来的 `Exploration.resolve` 接口保持兼容。
+
+`exporter.py` 提供 `file-export/v1`：扁平 JSON 数据可导出为 JSON 或 CSV，CSV 可选择
+分隔符与列名。八个组合完整执行。用户选择 JSON 后，两个 CSV 相关选项在剩余
+分支中结果相同，因此自动消除。
+
+`snapshot.py` 保存有版本的输入、合同与完整执行矩阵。恢复时校验作用域、策略空间、
+唯一分支、结果哈希和大小预算。`decision_sessions.py` 将快照、按顺序记录的回答、
+revision、事件、模型用量和最终产物保存到独立的 `decisions.sqlite3`。
+
+浏览器以 `input_text` 原文提交数据，由后端严格解析，保留超出 JavaScript 安全整数
+范围的 ID 并拒绝重复字段；`inputs` 接口仍可供已有调用方使用。显式新建使用新的
+创建请求 ID，同一次失败重试保留原 ID。
+
+```text
+Python Agent → MCP preview_export → ready
+                                      │ 工作台逐项选择
+                                      ▼
+                                   chosen
+                                      │ MCP collect_export
+                                      ▼
+                      校验当前输入 → 复算 → completed
+                             │        │
+                             ▼        ▼
+                           stale    failed
+```
+
+创建和回答使用幂等键，状态变更在 `BEGIN IMMEDIATE` 事务中检查 revision。记录模型
+用量不改变决策 revision，避免后台用量写入使刚显示的选择失效。源文件在接受回答和
+完成前重新读取并核对规范化 JSON 哈希。过期输入停止交付；已完成产物可重复读取。
+
+`mcp_server.py` 的 stdio 服务绑定启动参数中的一个文件；工具返回状态、待定键和
+本地链接。`agent.py` 是两阶段参考宿主：模型选择经过严格参数校验的工具动作，
+随后通过真实 MCP 客户端执行。原始记录只在本机预览，模型收到任务、工具定义、
+聚合统计和已确认选项。HTTP 不接受源文件路径。
+
+参考宿主的模型阶段按数据目录串行执行，占用独立 SQLite 事务锁。并发调用在发出
+模型请求前返回忙碌状态；进程退出自动释放锁，工作台回答使用另一数据库，不受阻塞。
+已有创建请求会复用经过校验的会话，恢复时复用已保存的模型动作。
+
+`/decisions` 展示真实文件内容、逐项选择、自动消除结果与执行证据；`/api/decisions`
+复用现有同源及 token 检查。文件会话与联系人工作台分别保留 50 条记录、两个未完成
+会话和每条 8 MiB 上限。接口与恢复步骤见 [Agent 工作流](agent-workflow.md)。
+
+## 兼容的订单 SDK 与联系人工作台
+
 v0.2 新增独立的 Python SDK 与订单数据 Agent。`sdk.py` 接收可信试跑函数，
 保存 JSON 快照并完整比较有界策略空间；`orders.py` 定义订单语义，
 `order_agent.py` 提供可选模型提问，`demo.py` / `reporting.py` 交付命令行与本地证据报告。

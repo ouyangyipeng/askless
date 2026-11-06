@@ -203,6 +203,10 @@ export default function App() {
           askless<span className="beta">LAB</span>
         </a>
         <div className="sidebar-caption">LESS ASKING. MORE DOING.</div>
+        <a className="nav-item" href="/decisions">
+          <GitBranch size={17} />
+          文件预览工作台<span>↗</span>
+        </a>
         <button
           className={"nav-item " + (!run ? "active" : "")}
           onClick={() => {

@@ -1,0 +1,464 @@
+{
+  "adapter": "file-export/v1",
+  "scope": "903b4ca8341728fddc1b3d7f3b6770a75f8c1c9f867f94789ae88cf9e7ca7cb3",
+  "input": [
+    {
+      "name": "Ada",
+      "team": "Systems",
+      "score": 98
+    },
+    {
+      "name": "Lin",
+      "team": "Research",
+      "score": 94
+    },
+    {
+      "name": "Grace",
+      "team": "Engineering",
+      "score": 97
+    }
+  ],
+  "trials": [
+    {
+      "id": "d2a37333dd7c6144",
+      "policy": {
+        "format": "json",
+        "separator": "comma",
+        "header": "include"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 211,
+          "media_type": "application/json",
+          "name": "records.json",
+          "text": "[\n  {\n    \"name\": \"Ada\",\n    \"score\": 98,\n    \"team\": \"Systems\"\n  },\n  {\n    \"name\": \"Lin\",\n    \"score\": 94,\n    \"team\": \"Research\"\n  },\n  {\n    \"name\": \"Grace\",\n    \"score\": 97,\n    \"team\": \"Engineering\"\n  }\n]\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "529fa6d13934d532f20ba555c8cfe96e8692e9f70e63cf688a0a1ee20b484a3f"
+    },
+    {
+      "id": "0657847a8372ecc9",
+      "policy": {
+        "format": "json",
+        "separator": "comma",
+        "header": "omit"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 211,
+          "media_type": "application/json",
+          "name": "records.json",
+          "text": "[\n  {\n    \"name\": \"Ada\",\n    \"score\": 98,\n    \"team\": \"Systems\"\n  },\n  {\n    \"name\": \"Lin\",\n    \"score\": 94,\n    \"team\": \"Research\"\n  },\n  {\n    \"name\": \"Grace\",\n    \"score\": 97,\n    \"team\": \"Engineering\"\n  }\n]\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "529fa6d13934d532f20ba555c8cfe96e8692e9f70e63cf688a0a1ee20b484a3f"
+    },
+    {
+      "id": "57a784809e414240",
+      "policy": {
+        "format": "json",
+        "separator": "semicolon",
+        "header": "include"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 211,
+          "media_type": "application/json",
+          "name": "records.json",
+          "text": "[\n  {\n    \"name\": \"Ada\",\n    \"score\": 98,\n    \"team\": \"Systems\"\n  },\n  {\n    \"name\": \"Lin\",\n    \"score\": 94,\n    \"team\": \"Research\"\n  },\n  {\n    \"name\": \"Grace\",\n    \"score\": 97,\n    \"team\": \"Engineering\"\n  }\n]\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "529fa6d13934d532f20ba555c8cfe96e8692e9f70e63cf688a0a1ee20b484a3f"
+    },
+    {
+      "id": "89a5673e393b7fa0",
+      "policy": {
+        "format": "json",
+        "separator": "semicolon",
+        "header": "omit"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 211,
+          "media_type": "application/json",
+          "name": "records.json",
+          "text": "[\n  {\n    \"name\": \"Ada\",\n    \"score\": 98,\n    \"team\": \"Systems\"\n  },\n  {\n    \"name\": \"Lin\",\n    \"score\": 94,\n    \"team\": \"Research\"\n  },\n  {\n    \"name\": \"Grace\",\n    \"score\": 97,\n    \"team\": \"Engineering\"\n  }\n]\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "529fa6d13934d532f20ba555c8cfe96e8692e9f70e63cf688a0a1ee20b484a3f"
+    },
+    {
+      "id": "8248d05ca948db4d",
+      "policy": {
+        "format": "csv",
+        "separator": "comma",
+        "header": "include"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 72,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "name,score,team\r\nAda,98,Systems\r\nLin,94,Research\r\nGrace,97,Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "b5594136c1c769d6e8d87900c001744810104873a7b9936c549e581d4e62d754"
+    },
+    {
+      "id": "98c75ccffbe1dfae",
+      "policy": {
+        "format": "csv",
+        "separator": "comma",
+        "header": "omit"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 55,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "Ada,98,Systems\r\nLin,94,Research\r\nGrace,97,Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "783c6ea60b15722b522228fd6446f5ae522d2d76cbcfb437ab21c1e3d14c495f"
+    },
+    {
+      "id": "d7b0905655adc0a8",
+      "policy": {
+        "format": "csv",
+        "separator": "semicolon",
+        "header": "include"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 72,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "name;score;team\r\nAda;98;Systems\r\nLin;94;Research\r\nGrace;97;Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "182216e02adf0a6cc859b5afe0a85372ba9ed6047e9ee1ad38721626fd082dd4"
+    },
+    {
+      "id": "05ab433445c81d82",
+      "policy": {
+        "format": "csv",
+        "separator": "semicolon",
+        "header": "omit"
+      },
+      "output": {
+        "artifact": {
+          "bytes": 55,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "Ada;98;Systems\r\nLin;94;Research\r\nGrace;97;Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      },
+      "output_hash": "9879d2dbe36ad8edf4742da188a893619837e2b8a46d3d9c0db4f15484214ab8"
+    }
+  ],
+  "stages": [
+    {
+      "answers": {},
+      "decisions": [
+        {
+          "key": "format",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["8248d05ca948db4d", "98c75ccffbe1dfae"]
+        }
+      ],
+      "result": null
+    },
+    {
+      "answers": {
+        "format": "json"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "json",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "auto",
+          "selected": "comma",
+          "witnesses": []
+        },
+        {
+          "key": "header",
+          "status": "auto",
+          "selected": "include",
+          "witnesses": []
+        }
+      ],
+      "result": {
+        "artifact": {
+          "bytes": 211,
+          "media_type": "application/json",
+          "name": "records.json",
+          "text": "[\n  {\n    \"name\": \"Ada\",\n    \"score\": 98,\n    \"team\": \"Systems\"\n  },\n  {\n    \"name\": \"Lin\",\n    \"score\": 94,\n    \"team\": \"Research\"\n  },\n  {\n    \"name\": \"Grace\",\n    \"score\": 97,\n    \"team\": \"Engineering\"\n  }\n]\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      }
+    },
+    {
+      "answers": {
+        "format": "csv"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["8248d05ca948db4d", "98c75ccffbe1dfae"]
+        }
+      ],
+      "result": null
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "comma"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "comma",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["8248d05ca948db4d", "98c75ccffbe1dfae"]
+        }
+      ],
+      "result": null
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "comma",
+        "header": "include"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "comma",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "answered",
+          "selected": "include",
+          "witnesses": ["8248d05ca948db4d", "98c75ccffbe1dfae"]
+        }
+      ],
+      "result": {
+        "artifact": {
+          "bytes": 72,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "name,score,team\r\nAda,98,Systems\r\nLin,94,Research\r\nGrace,97,Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      }
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "comma",
+        "header": "omit"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "comma",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "answered",
+          "selected": "omit",
+          "witnesses": ["8248d05ca948db4d", "98c75ccffbe1dfae"]
+        }
+      ],
+      "result": {
+        "artifact": {
+          "bytes": 55,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "Ada,98,Systems\r\nLin,94,Research\r\nGrace,97,Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      }
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "semicolon"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "semicolon",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "pending",
+          "selected": null,
+          "witnesses": ["d7b0905655adc0a8", "05ab433445c81d82"]
+        }
+      ],
+      "result": null
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "semicolon",
+        "header": "include"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "semicolon",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "answered",
+          "selected": "include",
+          "witnesses": ["d7b0905655adc0a8", "05ab433445c81d82"]
+        }
+      ],
+      "result": {
+        "artifact": {
+          "bytes": 72,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "name;score;team\r\nAda;98;Systems\r\nLin;94;Research\r\nGrace;97;Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      }
+    },
+    {
+      "answers": {
+        "format": "csv",
+        "separator": "semicolon",
+        "header": "omit"
+      },
+      "decisions": [
+        {
+          "key": "format",
+          "status": "answered",
+          "selected": "csv",
+          "witnesses": ["d2a37333dd7c6144", "8248d05ca948db4d"]
+        },
+        {
+          "key": "separator",
+          "status": "answered",
+          "selected": "semicolon",
+          "witnesses": ["8248d05ca948db4d", "d7b0905655adc0a8"]
+        },
+        {
+          "key": "header",
+          "status": "answered",
+          "selected": "omit",
+          "witnesses": ["d7b0905655adc0a8", "05ab433445c81d82"]
+        }
+      ],
+      "result": {
+        "artifact": {
+          "bytes": 55,
+          "media_type": "text/csv",
+          "name": "records.csv",
+          "text": "Ada;98;Systems\r\nLin;94;Research\r\nGrace;97;Engineering\r\n"
+        },
+        "columns": ["name", "score", "team"],
+        "rows": 3
+      }
+    }
+  ]
+}

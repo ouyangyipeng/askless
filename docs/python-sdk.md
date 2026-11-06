@@ -1,6 +1,6 @@
 # Python workflow integration
 
-AskLess v0.2 runs finite alternatives before asking a person. You supply trusted,
+AskLess runs finite alternatives before asking a person. You supply trusted,
 pure preview code and define its complete observable result. The SDK checks all
 combinations, retains meaningful choices, and verifies the selected result again.
 
@@ -118,6 +118,45 @@ The SDK executes previews only. Apply external effects in your application
 **after** collecting decisions and checking `Resolution`. Your application owns
 concurrency, stale external state checks and authorization for those effects.
 
+## Conditional decisions
+
+Version 0.3 adds immutable progress objects. Each answer removes incompatible
+trials, then recompiles the unanswered decisions over the remaining complete
+matrix. This reuses the original previews; answering adds no preview calls.
+
+```python
+from askless import explore
+from askless.exporter import EXPORT_ADAPTER, EXPORT_DECISIONS, preview_export
+
+data = [{"name": "Ada", "score": 98}]
+run = explore(
+    adapter=EXPORT_ADAPTER,
+    inputs=data,
+    decisions=EXPORT_DECISIONS,
+    preview=preview_export,
+)
+progress = run.progress().answer("format", "json")
+assert not progress.pending  # Both CSV-only choices now have equal outputs.
+result = progress.resolve(inputs=data)
+print(result.output)
+```
+
+`progress.answers` contains only manual answers in their original order.
+`progress.decisions` distinguishes `answered`, `auto` and `pending`.
+`answer` accepts exactly one currently pending key and a declared option, and
+returns a new progress object. Answering an already settled choice is rejected.
+`resolve` requires no pending decisions and invokes the original replay check.
+The original `run.resolve(all_pending_answers, inputs=...)` API is unchanged.
+
+For durable evidence, `askless.snapshot.save_exploration(run)` returns JSON data;
+`restore_exploration(data, preview)` checks the schema version, input/contract
+scope, unique and complete policies, trial IDs, output hashes and size budgets.
+Restoring executes no callback. Supply the same trusted adapter implementation,
+then call `restored.progress(saved_answers)` to replay manual answers in their
+saved insertion order. The snapshot binds an adapter identifier, not executable
+code. Source freshness and durable transactions are provided by the
+[file-preview session layer](agent-workflow.md).
+
 ## Attach actual agent questions
 
 ```python
@@ -169,7 +208,7 @@ failed-request usage.
   one call cannot change later branches or the stored evidence.
 - A branch exception, malformed/oversized output or result budget failure stops
   exploration. `ExplorationError` exposes `stage`, `branch_id` and
-  `completed_branches` (accepted preview results); arbitrary callback exception
+  `completed_branches` and `trials` (accepted preview results); arbitrary callback exception
   text is suppressed. A callback that exceeds the aggregate result budget has
   run, but its rejected evidence is excluded from this count.
   A failed run yields no successful `Exploration` or automatic selections.

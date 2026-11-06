@@ -7,7 +7,7 @@
     <title>AskLess — More agency. Fewer interruptions.</title>
     <meta
       name="description"
-      content="A Python decision compiler for data agents. Run bounded alternatives, compare exact outputs, and keep the decisions that matter. Try the order workflow without an API key."
+      content="Preview the actual files before you choose. AskLess connects Python agents through MCP, removes irrelevant follow-up questions, and resumes from verified local evidence."
     />
     <link rel="canonical" href="https://oyyp.nexa-lang.com/askless/" />
     <meta
@@ -47,7 +47,8 @@
         ><span>askless<span class="brand-dot">.</span></span></a
       >
       <nav aria-label="Main navigation">
-        <a href="#integrate">Python SDK</a><a href="#workflow">Explore</a
+        <a href="#integrate">Python SDK</a
+        ><a href="#file-export">Try a decision</a
         ><a class="nav-source" href="https://github.com/ouyangyipeng/askless"
           >GitHub <span aria-hidden="true">↗</span></a
         >
@@ -57,8 +58,8 @@
       <section class="hero wrap" aria-labelledby="hero-title">
         <div class="hero-copy">
           <div class="eyebrow">
-            <span class="status-dot"></span> Now inside your Python workflow ·
-            v0.2
+            <span class="status-dot"></span> Real files. One choice at a time. ·
+            v0.3
           </div>
           <h1 id="hero-title">
             More agency.<br />Fewer <em>interruptions.</em>
@@ -70,7 +71,7 @@
           <div class="hero-actions">
             <a class="button primary" href="#start"
               >Try the Python workflow <span aria-hidden="true">↗</span></a
-            ><a class="text-link" href="#workflow"
+            ><a class="text-link" href="#file-export"
               >See the idea in action <span aria-hidden="true">↓</span></a
             >
           </div>
@@ -81,7 +82,7 @@
         <div
           class="compiler-visual"
           role="img"
-          aria-label="In the order sample: three declared choices, eight executed combinations, two human decisions. Rounding resolves automatically for this input."
+          aria-label="In the file export example: three choices, eight previews, one human choice when JSON is selected. Delimiter and column names then become irrelevant."
         >
           <div class="visual-heading">
             <span>THE DECISION COMPILER</span
@@ -89,15 +90,15 @@
           </div>
           <div class="agent-stream">
             <div class="agent-lane">
-              <span>DUPLICATES</span>
+              <span>FORMAT</span>
               <div><i>?</i></div>
             </div>
             <div class="agent-lane">
-              <span>CANCELLATIONS</span>
+              <span>DELIMITER</span>
               <div><i>?</i></div>
             </div>
             <div class="agent-lane">
-              <span>ROUNDING</span>
+              <span>COLUMN NAMES</span>
               <div><i>?</i></div>
             </div>
           </div>
@@ -121,21 +122,21 @@
           <div class="output-line"></div>
           <div class="decision-output">
             <div>
-              <span class="decision-number">2</span>
+              <span class="decision-number">1</span>
               <div>
-                <strong>decisions for you</strong
-                ><span>with the evidence attached</span>
+                <strong>choice when you pick JSON</strong
+                ><span>the next two resolve themselves</span>
               </div>
             </div>
             <span class="output-arrow">↗</span>
           </div>
           <div class="auto-output">
-            <span>✓</span> Rounding: equivalent on this input
+            <span>✓</span> Delimiter &amp; column names: same JSON output
             <span class="auto-tag">RESOLVED</span>
           </div>
           <div class="visual-foot">
             <span>3 DECLARED CHOICES</span
-            ><span>ORDER SUMMARY / PYTHON SDK</span>
+            ><span>FILE EXPORT / CONDITIONAL DECISIONS</span>
           </div>
         </div>
       </section>
@@ -147,6 +148,32 @@
         </p>
         <span class="strip-mark" aria-hidden="true">✳</span>
       </div>
+      <section
+        id="file-export"
+        class="wrap section-space"
+        aria-labelledby="file-export-title"
+      >
+        <div class="section-intro">
+          <div class="eyebrow">NEW IN 0.3 / CONSEQUENCES FIRST</div>
+          <h2 id="file-export-title">
+            Choose a file.<br />Watch two questions disappear.
+          </h2>
+          <p>
+            Compare JSON and CSV from the same records. Pick JSON and the next
+            two questions resolve. Pick CSV and keep choosing the details that
+            change your file.
+          </p>
+        </div>
+        <div id="export-explorer"></div>
+        <p class="file-demo-link">
+          Bring your own records to the local workbench, or connect a Python
+          agent over MCP.
+          <a
+            href="https://github.com/ouyangyipeng/askless/blob/main/docs/agent-workflow.md"
+            >Run the complete workflow ↗</a
+          >
+        </p>
+      </section>
       <section
         class="mechanism wrap section-space"
         id="mechanism"
@@ -385,10 +412,10 @@ print(result.output["total"])  # 120.00</code></pre>
         <div>
           <h2 id="scope-title">Bring your workflow.<br />Keep the evidence.</h2>
           <p>
-            v0.2 adds a Python SDK, a runnable order-data agent, and portable
-            HTML/JSON reports. The contact workbench remains available. Your
-            preview defines the observable outcome; equality covers that
-            complete declared result on the current input.
+            v0.3 adds conditional decisions, a file-preview workbench and MCP
+            tools for a restartable Python agent. The SDK, order reports and
+            contact workbench remain available. Your preview defines the
+            complete observable result on the current input.
           </p>
           <p>
             Previews run trusted application code in your process. The SDK

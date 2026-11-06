@@ -9,7 +9,7 @@
   &nbsp; · &nbsp; <a href="README.md">English</a>
 </p>
 
-<p align="center"><sub>本地优先 &nbsp; / &nbsp; MIT 开源 &nbsp; / &nbsp; Python SDK v0.2</sub></p>
+<p align="center"><sub>本地优先 &nbsp; / &nbsp; MIT 开源 &nbsp; / &nbsp; Python + MCP v0.3</sub></p>
 
 <br />
 
@@ -19,17 +19,39 @@
 
 **让 Agent 花一点算力，替你省一次打断。**
 
-AskLess 先执行备选方案，比较真实产物，再把会影响结果的选择交给人。v0.2 提供可嵌入的 Python SDK、订单数据 Agent，以及可直接打开的 HTML / JSON 证据报告；原有联系人工作台继续可用。
+AskLess 先执行备选方案，比较真实产物，再把会影响结果的选择交给人。v0.3 新增文件预览工作台、MCP 接入和可跨进程恢复的 Python Agent。每确认一项选择，系统重新检查剩余问题是否仍然影响结果。原有 SDK、订单报告与联系人工作台继续可用。
 
 | 声明选择 | 实际执行 | 保留决定 |
 | --- | --- | --- |
-| 订单去重、取消订单、金额舍入，共 3 项合同 | 完整试跑 8 个组合，比较金额与所有保留、排除记录 | 示例保留 2 项人工决定，舍入在该输入上等价 |
+| 文件格式、分隔符、列名，共 3 项选择 | 完整执行 8 个组合，展示实际 JSON 与 CSV 文件 | 选 JSON 后只需 1 项人工决定；两个 CSV 专属问题自动消除 |
 
-以上来自六行合成订单；模型实际提问数、分支成本和产物一致性在报告中分别记录。人类决策耗时需要实际使用评估。
+官网示例使用三行合成数据。每次完整探索需要八次预览，交付前再复算一次。人工操作耗时留待用户评估。
 
-![订单工作流与真实分支结果](docs/images/orders.jpg)
+![文件预览工作台与真实产物](docs/images/decision-studio.jpg)
 
 ## 五分钟体验
+
+文件工作台需要 Python 3.12+、uv、Node.js 24.15+（或 22.22.2+）和 pnpm 12：
+
+```bash
+git clone https://github.com/ouyangyipeng/askless.git
+cd askless
+./run.sh
+```
+
+打开 **[127.0.0.1:8765/decisions](http://127.0.0.1:8765/decisions)**，粘贴扁平 JSON 数组或使用示例，生成预览后选择 JSON。分隔符和列名随即自动消除，再点「复算并生成文件」下载结果。这条路径无需模型。
+
+要接入真实模型，保持工作台运行，在配置好[阿里云环境变量](#真实-llm-与离线运行)的另一个终端启动：
+
+```bash
+uv run --extra agent python -m askless.agent --input examples/records.json
+# 在终端给出的网页中选择，再执行终端打印的恢复命令。
+uv run --extra agent python -m askless.agent --resume YOUR_SESSION_ID
+```
+
+Agent 通过真实 MCP 工具创建和收集预览，每个阶段最多一次逻辑模型调用。`--wait 120` 可等待网页选择并继续执行；原始记录保存在本机。[完整接入与恢复指南](docs/agent-workflow.md)说明自定义文件、数据目录及宿主配置。
+
+## 仅使用 Python
 
 需要 Python 3.12+ 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)。首次体验无需 API Key 或前端构建。
 
@@ -53,6 +75,8 @@ uv run python -m askless.demo --input path/to/orders.json
 终端交互模式会逐项询问剩余选择；非交互模式写入待决定报告并以状态码 2 退出，随后可用 `--choose key=value` 提供答案并重新执行。输入是 1–200 条订单的 JSON 数组，包含 `order_id`、十进制字符串 `amount` 和 `paid` / `cancelled` 状态。详见 [输入格式与执行语义](docs/python-sdk.md#try-the-included-workflow)。
 
 ## 接入你的 Python Agent
+
+逐项决策使用 `run.progress().answer(key, value)`。每次回答会过滤已排除的分支，重新判断剩余问题；全部必要选择确定后，调用 `progress.resolve(inputs=...)` 复算。见 [条件决策示例](docs/python-sdk.md#conditional-decisions)。
 
 ```python
 from pathlib import Path
@@ -128,9 +152,11 @@ CSV + 任务描述
 
 **结果等价的范围是当前整批输入与适配器定义的可观察结果。** 比较包含导出记录、隔离记录及阻断状态；完整枚举其他选择，避免在某一个分支里看起来相同就跳过问题。每项选择绑定输入的 SHA-256，回答不会跨数据集自动复用。
 
-联系人工作台的三个角色共用可信 CSV 执行器。v0.2 的自定义 Python 试跑接口独立于该工作台历史。通用编码 Agent 接入、生成代码隔离执行和跨任务偏好学习仍为后续方向。
+联系人工作台的三个角色共用可信 CSV 执行器。自定义 Python 试跑接口独立于该工作台历史；v0.3 MCP 工作流接入受控文件导出适配器。通用编码 Agent 接入、生成代码隔离执行和跨任务偏好学习仍为后续方向。
 
 ## 数据与资源边界
+
+**文件预览工作台：**输入最多 100 行、20 列、32 KiB，使用独立的 `.askless/decisions.sqlite3`。最多保留 50 个会话、两个未完成会话，每条不超过 8 MiB。回答和完成前重新校验源文件。一次三行数据的真实模型验收使用 2 次请求、1,753 tokens；单会话数据库为 24 KiB，见 [v0.3 验收记录](docs/validation-2026-11-06.md)。两个工作台分别计数，每个数据库的逻辑会话数据上限为 400 MiB，另有 SQLite 开销与可复用空页。
 
 **Python SDK：**默认最多 32 个完整分支，可通过 `max_branches` 在 1–256 之间设置；超出预算会在执行前拒绝。输入快照最多 512 KiB，单个结果 64 KiB，全部预览结果 4 MiB，加上元数据。SDK 不写磁盘，示例程序仅写入指定报告目录。
 
@@ -152,7 +178,7 @@ CSV + 任务描述
 ## 开发与验证
 
 ```bash
-uv sync --frozen
+uv sync --extra agent --frozen
 uv run pytest -q
 uv run ruff check src tests scripts
 uv run ruff format --check src tests scripts
@@ -170,6 +196,9 @@ pnpm --dir web site:build
 | 位置 | 职责 |
 | --- | --- |
 | `src/askless/sdk.py` | 有限合同、数据快照、完整策略比较与最终复算 |
+| `src/askless/exporter.py` / `snapshot.py` | 受控文件导出与探索快照恢复 |
+| `src/askless/decision_sessions.py` / `decision_api.py` | 持久会话、幂等与逐项选择接口 |
+| `src/askless/mcp_server.py` / `agent.py` | 文件绑定的 MCP 工具与两阶段参考宿主 |
 | `src/askless/orders.py` / `order_agent.py` | 订单执行语义与可选模型提问 |
 | `src/askless/demo.py` / `reporting.py` | 命令行、基线对比和便携证据报告 |
 | `src/askless/engine.py` | CSV 验证、真实分支执行、证据比较与问题编译 |

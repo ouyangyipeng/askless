@@ -12,7 +12,7 @@
   <a href="README.zh-CN.md">中文</a>
 </p>
 
-<p align="center"><sub>LOCAL-FIRST &nbsp; / &nbsp; MIT LICENSED &nbsp; / &nbsp; PYTHON SDK v0.2</sub></p>
+<p align="center"><sub>LOCAL-FIRST &nbsp; / &nbsp; MIT LICENSED &nbsp; / &nbsp; PYTHON + MCP v0.3</sub></p>
 
 <br />
 
@@ -22,22 +22,44 @@
 
 AskLess runs finite alternatives, compares their actual outputs, and brings you the choices that change the result—with evidence attached. Embed it in a Python data workflow, inspect the remaining decisions, and verify the selected policy before continuing.
 
-**New in v0.2:** a typed Python SDK, an order-data agent, and portable HTML/JSON reports. Your first run needs Python and uv. The original contact CSV workbench remains available.
+**New in v0.3: choose the result, then continue.** A file-preview workbench, real MCP tools and a restartable Python agent. Answer one question and AskLess checks whether the remaining questions still matter. The Python SDK, order reports and contact workflow remain available.
 
 | Collect | Explore | Decide |
 | :--- | :--- | :--- |
-| **3 declared choices** in the order workflow | **8 complete policy combinations** | **2 human decisions** in the included sample |
-| Duplicates · cancellations · rounding | Totals, accepted orders and discarded records are compared. | Rounding is equivalent on this input; the other two choices remain. |
+| **3 export choices** | **8 complete policy combinations** | **1 choice when you select JSON** |
+| Format · delimiter · column names | Compare actual file bytes and metadata. | The two CSV-specific choices resolve automatically. CSV keeps relevant choices. |
 
-<sub>Six synthetic input rows. Counts describe this workflow's contracts. Live model questions, execution cost and final-output equality are recorded separately; human time is an open evaluation question.</sub>
+<sub>Three synthetic records in the public replay. The trusted exporter runs eight previews and one final replay. Human time remains an open evaluation question.</sub>
 
 <br />
 
-<a href="https://oyyp.nexa-lang.com/askless/#workflow"><img src="docs/images/orders.jpg" alt="AskLess order workflow: three declared choices become two human decisions; the chosen policy produces four orders totalling USD 120.00." width="100%" /></a>
+<a href="https://oyyp.nexa-lang.com/askless/#file-export"><img src="docs/images/decision-studio.jpg" alt="AskLess decision studio displays actual JSON and CSV files side by side, with pending choices and local execution evidence." width="100%" /></a>
 
-<p align="center"><sub>Actual SDK outputs in the interactive walkthrough · <a href="https://oyyp.nexa-lang.com/askless/#workflow">Try the choices ↗</a></sub></p>
+<p align="center"><sub>Actual local workbench · <a href="https://oyyp.nexa-lang.com/askless/#file-export">Try the recorded file comparison ↗</a></sub></p>
 
 ## Quickstart
+
+For the visual workflow, install **Python 3.12+**, **uv**, **Node.js 24.15+** (or 22.22.2+) and **pnpm 12**:
+
+```bash
+git clone https://github.com/ouyangyipeng/askless.git
+cd askless
+./run.sh
+```
+
+Open **[127.0.0.1:8765/decisions](http://127.0.0.1:8765/decisions)**. Paste a flat JSON array or use the sample, prepare the files, and choose JSON. Delimiter and column-name questions disappear. Click the replay button to verify and download the file. This path makes **zero model requests**.
+
+To use the reference LLM agent, keep the workbench running and launch this in a second terminal with the [provider environment](#connect-a-real-llm) configured:
+
+```bash
+uv run --extra agent python -m askless.agent --input examples/records.json
+# Choose in the printed workbench URL, then run the printed resume command.
+uv run --extra agent python -m askless.agent --resume YOUR_SESSION_ID
+```
+
+The agent invokes real MCP tools and persists its progress. It uses one bounded model action before preview and another before collection; file rows stay local. `--wait 120` keeps it waiting briefly for your choice. [Complete setup, host configuration and recovery →](docs/agent-workflow.md)
+
+## Python-only quickstart
 
 You need **Python 3.12+** and [uv](https://docs.astral.sh/uv/getting-started/installation/).
 
@@ -55,6 +77,8 @@ Open the **`report.html` path printed in your terminal**. The report shows every
 The default mode replays one declared question per contract and makes **zero LLM calls**. Use `--input path/to/orders.json` for your own data; omit `--choose` to answer interactively. In noninteractive use, missing choices produce a pending report and exit code 2. See the [input format and CLI guide](docs/python-sdk.md#try-the-included-workflow).
 
 ## Put it inside your agent
+
+For incremental decisions, use `run.progress().answer(key, value)`. Each answer filters existing evidence and recomputes the remaining choices. `progress.resolve(inputs=...)` verifies the final output once all relevant choices are settled. See the [conditional-decision example](docs/python-sdk.md#conditional-decisions).
 
 ```python
 from pathlib import Path
@@ -163,11 +187,13 @@ Three roles each ask about three fixed contracts. The included eight-row CSV pro
 | Invalid emails | Quarantine / block | Export valid rows, or block the entire batch. Both retain invalid rows for review. |
 | Email case | Preserve / lowercase | Change the export spelling. The included sample is already lowercase, so this choice is equivalent. |
 
-The contact workbench retains its fixed contracts and shared trusted executor. The v0.2 SDK supports custom Python previews separately. General coding-agent integrations, generated-code isolation and cross-task preference learning are future work.
+The contact workbench retains its fixed contracts and shared trusted executor. The SDK supports custom Python previews; the v0.3 MCP workflow registers a bounded file exporter. General coding-agent integrations, generated-code isolation and cross-task preference learning are future work.
 
 </details>
 
 ## Local data, bounded resources
+
+The **file-preview workflow** accepts up to 100 flat rows, 20 columns and 32 KiB of JSON. Its separate `.askless/decisions.sqlite3` retains up to 50 sessions, two unfinished sessions and 8 MiB per session. Source files are checked before answering and completing. The [recorded live run](docs/validation-2026-11-06.md) used 2 model requests, 1,753 tokens and a 24 KiB database for one session.
 
 The **Python SDK** stores snapshots in memory: at most 512 KiB input, 64 KiB per output and 4 MiB of total preview outputs, plus metadata. The default is 32 complete branches; `max_branches` can range from 1 to 256. It rejects larger spaces before running previews. The demo writes only to the requested report directory and refuses to overwrite an existing one.
 
@@ -185,7 +211,7 @@ No Docker, separate database service, or local model download is required. See t
 ## Develop
 
 ```bash
-uv sync --frozen
+uv sync --extra agent --frozen
 uv run pytest -q
 uv run ruff check src tests scripts
 uv run ruff format --check src tests scripts
@@ -203,6 +229,9 @@ Run `pnpm --dir web dev` alongside the Python server for workbench development. 
 | Location | Responsibility |
 | :--- | :--- |
 | `src/askless/sdk.py` | Finite contracts, input snapshots, exhaustive comparison, verified replay |
+| `src/askless/exporter.py` · `snapshot.py` | Trusted file export and validated exploration snapshots |
+| `src/askless/decision_sessions.py` · `decision_api.py` | Durable decisions, idempotency, source freshness and local HTTP interface |
+| `src/askless/mcp_server.py` · `agent.py` | File-bound MCP tools and the bounded reference LLM host |
 | `src/askless/orders.py` · `order_agent.py` | Order semantics and optional real model questions |
 | `src/askless/demo.py` · `reporting.py` | CLI workflow, baseline comparison, portable evidence reports |
 | `src/askless/engine.py` | CSV validation, branch execution, comparison, question compilation |
@@ -217,7 +246,7 @@ Run `pnpm --dir web dev` alongside the Python server for workbench development. 
 
 We are interested in small adapters with clear result semantics, realistic agent traces, and evaluations of human attention and task quality. Start with the [contribution guide](CONTRIBUTING.md), [architecture](docs/architecture.md), or a [new issue](https://github.com/ouyangyipeng/askless/issues).
 
-Both website samples are generated from the actual executors and validated locally. [Website maintenance](docs/website.md) explains how to rebuild and publish them.
+All three website samples are generated from the actual executors and validated locally. [Website maintenance](docs/website.md) explains how to rebuild and publish them.
 
 ---
 
