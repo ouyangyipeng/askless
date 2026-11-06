@@ -12,6 +12,7 @@ from pydantic import Field
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from askless.decision_api import decision_router
 from askless.engine import export_csv
 from askless.llm import LLMClient, Settings
 from askless.models import Model
@@ -58,8 +59,9 @@ def create_app(data_dir: Path | None = None, settings: Settings | None = None) -
         await asyncio.gather(*tasks, return_exceptions=True)
         store.interrupt_inflight()
 
-    app = FastAPI(title="AskLess", version="0.2.0", lifespan=lifespan, docs_url=None, redoc_url=None)
+    app = FastAPI(title="AskLess", version="0.3.0", lifespan=lifespan, docs_url=None, redoc_url=None)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
+    app.include_router(decision_router(data_dir or Path(".askless")))
 
     def spawn(work: Coroutine[None, None, None]) -> None:
         task = asyncio.create_task(work)
@@ -99,7 +101,7 @@ def create_app(data_dir: Path | None = None, settings: Settings | None = None) -
 
     @app.get("/api/config")
     def configuration() -> dict[str, str | bool]:
-        return {"token": token, "model": config.model, "configured": bool(config.api_key), "sample_csv": SAMPLE, "version": "0.2.0"}
+        return {"token": token, "model": config.model, "configured": bool(config.api_key), "sample_csv": SAMPLE, "version": "0.3.0"}
 
     @app.get("/api/runs")
     def list_runs() -> list[dict[str, str | int]]:
@@ -150,6 +152,7 @@ def create_app(data_dir: Path | None = None, settings: Settings | None = None) -
         app.mount("/assets", StaticFiles(directory=web / "assets"), name="assets")
 
         @app.get("/")
+        @app.get("/decisions")
         def index() -> FileResponse:
             return FileResponse(web / "index.html")
 

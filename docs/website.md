@@ -9,6 +9,7 @@ The official website is published at <https://oyyp.nexa-lang.com/askless/>.
 - `web/site/SampleExplorer.tsx`: interactive walkthrough of saved executor outputs.
 - `web/site/sample.json`: eight deterministic policy outcomes from the included CSV.
 - `web/site/OrderExplorer.tsx` / `orders.json`: the Python order-workflow walkthrough and all eight saved branch outcomes.
+- `web/site/ExportExplorer.tsx` / `exports.json`: the conditional file-export walkthrough, all eight previews and five replay-verified final outputs.
 - `docs/images/`: public brand artwork, actual workbench screenshot, social preview.
 
 The website reuses the workbench's Vite, TypeScript, and React dependencies. Main content is static HTML and remains readable without JavaScript. The sample explorer uses React. There are no analytics, remote fonts, LLM calls, or credential inputs in the public page.
@@ -29,12 +30,13 @@ After changing the input fixture or executor semantics:
 ```bash
 uv run python scripts/export_site_sample.py
 uv run python scripts/export_order_sample.py
+uv run python scripts/export_decision_sample.py
 uv run pytest -q tests/test_site_sample.py
 pnpm --dir web test
 pnpm --dir web site:build
 ```
 
-The repository tests compare the contact sample with its executor. Additional local checks validate the order sample's input, scope, decisions and every saved branch against the SDK. Timing fields are omitted because they vary between runs. The order sample uses three declared contracts; live model questions are measured separately in local reports.
+The repository tests compare the contact sample with its executor. Additional local checks validate order and file-export samples against the SDK. The file exporter traverses the complete decision tree and verifies every final replay before writing the sample. Timing fields are omitted because they vary between runs. Live model usage is measured separately in local reports.
 
 ## Publish
 
@@ -44,7 +46,7 @@ The project inherits the account's existing Pages domain, `oyyp.nexa-lang.com`.
 The standard `ouyangyipeng.github.io/askless/` URL redirects to it. HTTPS is
 enforced for this project.
 
-Check the repository's Actions tab and Pages settings after publishing. Verify the public URL, image loading, all four sample policy selections, and the installation copy button. For a fork, update the repository URLs, canonical metadata, social image URL, and Vite base path before deployment.
+Check the repository's Actions tab and Pages settings after publishing. Verify the public URL, image loading, the contact and order choices, JSON question elimination, all four CSV outcomes, and the installation copy button. For a fork, update the repository URLs, canonical metadata, social image URL, and Vite base path before deployment.
 
 ## Design and behavior checks
 

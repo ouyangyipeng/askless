@@ -7,7 +7,7 @@ import math
 import re
 import time
 from collections.abc import Callable, Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Literal, cast
 
 from pydantic import JsonValue
@@ -58,6 +58,7 @@ class ExplorationError(RuntimeError):
         self.stage = stage
         self.branch_id = branch_id
         self.completed_branches = completed_branches
+        self.trials: tuple[Trial, ...] = ()
         super().__init__(f"{stage} failed at branch {branch_id}; {completed_branches} previews completed. No decision result was returned.")
 
 
@@ -98,6 +99,15 @@ def _hash(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _scope(adapter: str, snapshot: bytes, contracts: tuple[Decision, ...]) -> str:
+    signature = {
+        "adapter": adapter,
+        "input_hash": _hash(snapshot),
+        "decisions": [{"key": d.key, "prompt": d.prompt, "options": list(d.options)} for d in contracts],
+    }
+    return _hash(_encode(signature, MAX_INPUT_BYTES))
+
+
 @dataclass(frozen=True)
 class Trial:
     id: str
@@ -124,7 +134,7 @@ class Trial:
 @dataclass(frozen=True)
 class CompiledDecision:
     decision: Decision
-    status: Literal["auto", "pending"]
+    status: Literal["auto", "pending", "answered"]
     selected: str | None
     question_ids: tuple[str, ...]
     witnesses: tuple[str, ...]
@@ -168,6 +178,12 @@ class Exploration:
     def pending(self) -> tuple[CompiledDecision, ...]:
         return tuple(group for group in self.decisions if group.status == "pending")
 
+    def progress(self, answers: Mapping[str, str] | None = None) -> "DecisionProgress":
+        progress = DecisionProgress(self, (), self.decisions)
+        for key, value in (answers or {}).items():
+            progress = progress.answer(key, value)
+        return progress
+
     def resolve(self, answers: Mapping[str, str], *, inputs: JsonValue) -> Resolution:
         if _encode(inputs, MAX_INPUT_BYTES) != self._input:
             raise ValueError("The input changed; explore it again before resolving decisions.")
@@ -184,6 +200,44 @@ class Exploration:
         if replay._output != expected._output:
             raise ExplorationError("replay", expected.id, len(self.trials))
         return Resolution(self.scope, replay)
+
+
+@dataclass(frozen=True)
+class DecisionProgress:
+    exploration: Exploration = field(repr=False)
+    _answers: tuple[tuple[str, str], ...] = field(repr=False)
+    decisions: tuple[CompiledDecision, ...]
+
+    @property
+    def answers(self) -> dict[str, str]:
+        return dict(self._answers)
+
+    @property
+    def pending(self) -> tuple[CompiledDecision, ...]:
+        return tuple(group for group in self.decisions if group.status == "pending")
+
+    def answer(self, key: str, value: str) -> "DecisionProgress":
+        target = next((group for group in self.pending if group.decision.key == key), None)
+        if target is None or value not in target.decision.options:
+            raise ValueError("Answer must target a pending decision with a declared option.")
+        answers = self.answers | {key: value}
+        trials = tuple(trial for trial in self.exploration.trials if all(trial.policy[k] == v for k, v in answers.items()))
+        groups = tuple(
+            replace(group, status="answered", selected=answers[group.decision.key])
+            if group.decision.key in answers
+            else _compile(group.decision, trials, self.exploration.questions)
+            for group in self.decisions
+        )
+        return DecisionProgress(self.exploration, tuple(answers.items()), groups)
+
+    def resolve(self, *, inputs: JsonValue) -> Resolution:
+        if self.pending:
+            raise ValueError("Pending decisions must be answered before replay.")
+        original = {group.decision.key for group in self.exploration.pending}
+        answers = {group.decision.key: group.selected for group in self.decisions if group.decision.key in original}
+        if any(value is None for value in answers.values()):
+            raise ValueError("A selected policy value is missing.")
+        return self.exploration.resolve(cast(dict[str, str], answers), inputs=inputs)
 
 
 def _execute(preview: Preview, inputs: bytes, policy: dict[str, str], branch_id: str, stage: str, completed: int) -> Trial:
@@ -249,21 +303,22 @@ def explore(
     if not _text(adapter, 200) or not callable(preview):
         raise ValueError("An adapter/version identifier and callable preview are required.")
     snapshot = _encode(inputs, MAX_INPUT_BYTES)
-    signature = {
-        "adapter": adapter,
-        "input_hash": _hash(snapshot),
-        "decisions": [{"key": d.key, "prompt": d.prompt, "options": list(d.options)} for d in contracts],
-    }
-    scope = _hash(_encode(signature, MAX_INPUT_BYTES))
+    scope = _scope(adapter, snapshot, contracts)
     trials: list[Trial] = []
     stored_bytes = 0
     for values in itertools.product(*(decision.options for decision in contracts)):
         policy = dict(zip((decision.key for decision in contracts), values, strict=True))
         branch_id = _hash(_encode({"scope": scope, "policy": policy}, MAX_INPUT_BYTES))[:16]
-        trial = _execute(preview, snapshot, policy, branch_id, "preview", len(trials))
+        try:
+            trial = _execute(preview, snapshot, policy, branch_id, "preview", len(trials))
+        except ExplorationError as error:
+            error.trials = tuple(trials)
+            raise
         stored_bytes += len(trial._output)
         if stored_bytes > MAX_TOTAL_BYTES:
-            raise ExplorationError("budget", branch_id, len(trials))
+            error = ExplorationError("budget", branch_id, len(trials))
+            error.trials = tuple(trials)
+            raise error
         trials.append(trial)
     evidence = tuple(trials)
     compiled = tuple(_compile(decision, evidence, trace) for decision in contracts)
