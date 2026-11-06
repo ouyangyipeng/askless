@@ -5,11 +5,11 @@
 <p align="center">
   <a href="https://oyyp.nexa-lang.com/askless/"><strong>官网与交互示例 ↗</strong></a>
   &nbsp; · &nbsp; <a href="#五分钟体验">快速开始</a>
-  &nbsp; · &nbsp; <a href="docs/architecture.md">架构说明</a>
+  &nbsp; · &nbsp; <a href="docs/python-sdk.md">Python SDK</a>
   &nbsp; · &nbsp; <a href="README.md">English</a>
 </p>
 
-<p align="center"><sub>本地优先 &nbsp; / &nbsp; MIT 开源 &nbsp; / &nbsp; 实验版本 v0.1</sub></p>
+<p align="center"><sub>本地优先 &nbsp; / &nbsp; MIT 开源 &nbsp; / &nbsp; Python SDK v0.2</sub></p>
 
 <br />
 
@@ -17,31 +17,70 @@
 
 **Run the alternatives. Ask only what matters.**
 
-让协作 Agent 先执行备选方案，把需要人回答的问题收敛成带真实结果预览的决定。
+**让 Agent 花一点算力，替你省一次打断。**
 
-AskLess 0.1 是本地可运行的实验版本。首个适配器处理联系人 CSV：三个角色各自提出重复记录、无效邮箱、大小写三项策略问题；执行器完整试跑八种组合；编译器按同一数据作用域和固定策略合同合并问题，仅在所有对照结果相同时自动解决选择。你确认剩余决定后，三个角色接收同一份策略，执行器重新计算并校验交付结果。
+AskLess 先执行备选方案，比较真实产物，再把会影响结果的选择交给人。v0.2 提供可嵌入的 Python SDK、订单数据 Agent，以及可直接打开的 HTML / JSON 证据报告；原有联系人工作台继续可用。
 
-![AskLess 本地工作台](docs/images/workbench.jpg)
+| 声明选择 | 实际执行 | 保留决定 |
+| --- | --- | --- |
+| 订单去重、取消订单、金额舍入，共 3 项合同 | 完整试跑 8 个组合，比较金额与所有保留、排除记录 | 示例保留 2 项人工决定，舍入在该输入上等价 |
+
+以上来自六行合成订单；模型实际提问数、分支成本和产物一致性在报告中分别记录。人类决策耗时需要实际使用评估。
+
+![订单工作流与真实分支结果](docs/images/orders.jpg)
 
 ## 五分钟体验
 
-需要 Python 3.12+、[uv](https://docs.astral.sh/uv/getting-started/installation/)、Node.js 24.15+（或 22.22.2+）、pnpm 12。本机验收使用 Node.js 24。
+需要 Python 3.12+ 和 [uv](https://docs.astral.sh/uv/getting-started/installation/)。首次体验无需 API Key 或前端构建。
 
 ```bash
 git clone https://github.com/ouyangyipeng/askless.git
 cd askless
-./run.sh
+uv sync --frozen
+uv run python -m askless.demo \
+  --choose duplicates=last \
+  --choose cancelled=exclude
 ```
 
-打开 [本地工作台](http://127.0.0.1:8765)。脚本安装锁定依赖、构建界面，然后启动仅监听 `127.0.0.1` 的服务。已有依赖会复用；停止服务用 `Ctrl+C`。可用 `./run.sh --port 8766` 改端口。
+打开终端打印的 **`report.html` 路径**。报告展示选择、差异证据、所有分支、额外执行成本与最终结果；同目录的 `report.json` 保存完整证据，`result.json` 保存最终订单汇总。上述选项得到 **4 笔订单、总额 120.00 美元**。
 
-如果只想启动已经构建好的版本：
+每次生成新的 `artifacts/orders-*` 目录，已有目录会被拒绝，避免覆盖历史证据。换用自己的数据：
 
 ```bash
-.venv/bin/python -m askless --port 8765
+uv run python -m askless.demo --input path/to/orders.json
 ```
 
-界面默认载入八行合成示例数据。选择“保留末次记录”和“隔离异常，继续导入”，会得到四条联系人和两条隔离记录。展开问题卡能查看分支产物与三个角色的原始问题；完成后可下载 CSV 和完整 JSON 证据包。
+终端交互模式会逐项询问剩余选择；非交互模式写入待决定报告并以状态码 2 退出，随后可用 `--choose key=value` 提供答案并重新执行。输入是 1–200 条订单的 JSON 数组，包含 `order_id`、十进制字符串 `amount` 和 `paid` / `cancelled` 状态。详见 [输入格式与执行语义](docs/python-sdk.md#try-the-included-workflow)。
+
+## 接入你的 Python Agent
+
+```python
+from pathlib import Path
+
+from askless import explore
+from askless.orders import ORDER_DECISIONS, load_orders, preview_orders
+
+data = load_orders(Path("examples/orders.json"))
+run = explore(
+    adapter="order-summary/v1",
+    inputs=data,
+    decisions=ORDER_DECISIONS,
+    preview=preview_orders,
+)
+
+for group in run.pending:
+    print(group.decision.prompt, group.decision.options)
+
+# 收集用户对剩余问题的回答，然后复算核验。
+result = run.resolve({"duplicates": "last", "cancelled": "exclude"}, inputs=data)
+print(result.output)
+```
+
+替换合同与 `preview` 函数即可接入自己的任务。每项 `Decision` 支持 2–8 个选项；`AgentQuestion` 把模型真实提问绑定到合同。模型漏问的已注册选择仍会被检查。完整自定义函数示例、失败语义和比较规则见 [SDK 指南](docs/python-sdk.md)。
+
+SDK 完整枚举策略空间，检查其他选项的所有组合；全部结果相同才自动选择第一个选项。用户确认后，原始试跑函数重新执行，精确结果一致才返回 `Resolution`。输入、适配器版本与合同一起形成作用域哈希。
+
+这份订单示例需要八次预览和一次复算，直接执行基线需要一次。报告单列这些成本，并比较相同输入和最终策略的产物。
 
 ## 真实 LLM 与离线运行
 
@@ -55,11 +94,19 @@ cd askless
 
 从已导出这些变量的终端启动即可。程序只读取环境变量，不自动加载 `.env` 或 shell 配置文件。模型需支持 Chat Completions、JSON 输出与 `enable_thinking: false` 参数。
 
-真实模式通常调用六次模型：三次提问、三次确认策略。每次请求最多重试一次，连接与读写超时各为 45 秒。模型错误会显示失败状态并保留已完成证据。界面的请求和 token 数来自成功解析并记录的阶段；失败请求的用量及供应商账单需要在供应商侧查询。
+订单示例加 `--live` 后通常调用一次模型，允许模型只提出相关问题。每次请求最多重试一次，连接与读写超时各为 45 秒。发送内容为固定任务、合同及记录数、重复数、取消数、分以下金额数；原始订单 ID 与金额留在本地。预览与最终复算均不调用模型。
 
-无凭据时可使用“离线演示”。该模式采用固定角色问题，不调用模型；八种分支执行、问题编译、回答校验与 CSV 导出仍在本机运行。
+默认离线模式为每项合同生成一个声明问题，所有分支都实际执行。[已记录的真实调用](docs/validation-2026-10-26.md) 中，模型提出两项问题，编译器保留两项；离线合同演示从三项选择收敛为两项决定。两类轨迹在报告中分开标注。
 
-## 工作机制
+## 联系人工作台
+
+安装 Node.js 24.15+（或 22.22.2+）、pnpm 12 后运行 `./run.sh`，打开 [本地工作台](http://127.0.0.1:8765)。脚本安装锁定依赖、构建界面并启动 Python 服务。使用 `Ctrl+C` 停止，可通过 `./run.sh --port 8766` 更改端口。
+
+![AskLess 联系人工作台](docs/images/workbench.jpg)
+
+工作台支持“离线演示”和真实 LLM 模式。真实模式通常进行三次提问和三次策略确认。内置八行合成联系人数据：选择“保留末次记录”和“隔离异常”，得到四条联系人和两条隔离记录。展开问题卡可比较分支，完成后可下载 CSV 与完整证据包。
+
+### 联系人工作台机制
 
 ```text
 CSV + 任务描述
@@ -81,9 +128,15 @@ CSV + 任务描述
 
 **结果等价的范围是当前整批输入与适配器定义的可观察结果。** 比较包含导出记录、隔离记录及阻断状态；完整枚举其他选择，避免在某一个分支里看起来相同就跳过问题。每项选择绑定输入的 SHA-256，回答不会跨数据集自动复用。
 
-当前三个角色共用一个可信的 CSV 策略执行器。原型尚未接入 Codex / Claude Code 等通用编码 Agent，也未提供任意生成代码的沙箱执行、跨任务偏好学习或自动归纳上层产品决定。扩展到其他场景时，需要为该场景实现操作合同、受控执行和可观察结果定义。
+联系人工作台的三个角色共用可信 CSV 执行器。v0.2 的自定义 Python 试跑接口独立于该工作台历史。通用编码 Agent 接入、生成代码隔离执行和跨任务偏好学习仍为后续方向。
 
 ## 数据与资源边界
+
+**Python SDK：**默认最多 32 个完整分支，可通过 `max_branches` 在 1–256 之间设置；超出预算会在执行前拒绝。输入快照最多 512 KiB，单个结果 64 KiB，全部预览结果 4 MiB，加上元数据。SDK 不写磁盘，示例程序仅写入指定报告目录。
+
+试跑函数是调用方进程中的可信代码，需要纯函数、确定性和有限执行时间。SDK 比较完整声明的 JSON 结果；调用方负责包含全部重要产物，并管理函数耗时、峰值内存与外部副作用。执行外部写入应放在确认与复算之后。
+
+**联系人工作台：**
 
 - 原始 CSV、所有分支结果、回答和回执保存于本地 `.askless/runs.sqlite3`。
 - 发送给模型的内容为任务描述、角色、聚合统计、策略合同与确认后的行数/阻断状态。任务描述中输入的信息会发送给配置的模型服务。
@@ -116,6 +169,9 @@ pnpm --dir web site:build
 
 | 位置 | 职责 |
 | --- | --- |
+| `src/askless/sdk.py` | 有限合同、数据快照、完整策略比较与最终复算 |
+| `src/askless/orders.py` / `order_agent.py` | 订单执行语义与可选模型提问 |
+| `src/askless/demo.py` / `reporting.py` | 命令行、基线对比和便携证据报告 |
 | `src/askless/engine.py` | CSV 验证、真实分支执行、证据比较与问题编译 |
 | `src/askless/agents.py` / `llm.py` | 角色协议、模型调用、显式策略回执 |
 | `src/askless/service.py` / `store.py` | 生命周期、事务、作用域、并发与存储边界 |

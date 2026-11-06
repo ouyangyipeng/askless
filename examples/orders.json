@@ -1,0 +1,8 @@
+[
+  {"order_id": "A100", "amount": "35.00", "status": "paid"},
+  {"order_id": "A100", "amount": "42.00", "status": "paid"},
+  {"order_id": "A101", "amount": "12.50", "status": "cancelled"},
+  {"order_id": "A102", "amount": "19.99", "status": "paid"},
+  {"order_id": "A103", "amount": "8.01", "status": "paid"},
+  {"order_id": "A104", "amount": "50.00", "status": "paid"}
+]
